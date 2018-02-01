@@ -1,0 +1,21 @@
+{
+  "name": "burn-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && NODE_ENV=development node ./dist/app.js ",
+    "dev": "./node_modules/nodemon/bin/nodemon.js",
+    "tree": "tree -I '*svn|*node_module*|book*|code'"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/koa": "^2.0.43",
+    "@types/koa-router": "^7.0.27",
+    "koa": "^2.4.1",
+    "koa-router": "^7.4.0",
+    "nodemon": "^1.14.11"
+  }
+}
