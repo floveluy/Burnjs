@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Koa = require("koa");
 const loader_1 = require("./loader");
 const logger_1 = require("./logger");
+const controller_1 = require("./base/controller");
+const service_1 = require("./base/service");
 class Burn extends Koa {
     constructor() {
         super();
@@ -18,4 +20,6 @@ class Burn extends Koa {
         });
     }
 }
+Burn.Controller = controller_1.Controller;
+Burn.Service = service_1.Service;
 exports.Burn = Burn;
