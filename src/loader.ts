@@ -12,18 +12,26 @@ interface FileModule {
     filename: string
 }
 
+interface StringSub {
+    source: string,
+    isFound: boolean
+}
+
 export class Loader {
     private controller: KV = {};
     private koaRouter: any = new KoaRouter;
     private app: Burn;
-
 
     constructor(app: Burn) {
         this.app = app;
     }
 
     private appDir() {
-        return __dirname.substr(0, __dirname.length - 4);
+        const subString = removeString(__dirname, 'node_modules');
+        if (subString.isFound) {
+            return subString.source;
+        }
+        return subString.source.substr(0, subString.source.length - 4);
     }
 
     private fileLoader(url: string): Array<FileModule> {
@@ -141,4 +149,18 @@ export class Loader {
         this.loadMiddleware();
         this.loadRouter();//依赖loadController 
     }
+}
+
+function removeString(source: string, str: string): StringSub {
+    const index = source.indexOf(str);
+    if (index > 0) {
+        return {
+            source: source.substr(0, index),
+            isFound: true
+        };
+    }
+    return {
+        source: source,
+        isFound: false
+    };
 }

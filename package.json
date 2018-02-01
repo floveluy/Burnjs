@@ -1,8 +1,12 @@
 {
   "name": "burnjs",
-  "version": "1.0.0",
+  "version": "0.0.10",
   "description": "",
-  "main": "index.js",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "bin": {
+    "gen": "gen.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && NODE_ENV=development node ./dist/app.js ",

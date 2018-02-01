@@ -11,7 +11,11 @@ class Loader {
         this.app = app;
     }
     appDir() {
-        return __dirname.substr(0, __dirname.length - 4);
+        const subString = removeString(__dirname, 'node_modules');
+        if (subString.isFound) {
+            return subString.source;
+        }
+        return subString.source.substr(0, subString.source.length - 4);
     }
     fileLoader(url) {
         const merge = this.appDir() + url;
@@ -118,4 +122,7 @@ class Loader {
         this.loadRouter(); //依赖loadController 
     }
 }
+
+
 exports.Loader = Loader;
+
