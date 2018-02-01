@@ -8,6 +8,7 @@ import { Service } from './base/service';
 export interface KV {
     [key: string]: any
 }
+
 export class Burn extends Koa {
     private loader: Loader;
     private port: number;
