@@ -122,7 +122,17 @@ class Loader {
         this.loadRouter(); //依赖loadController 
     }
 }
-
-
 exports.Loader = Loader;
-
+function removeString(source, str) {
+    const index = source.indexOf(str);
+    if (index > 0) {
+        return {
+            source: source.substr(0, index),
+            isFound: true
+        };
+    }
+    return {
+        source: source,
+        isFound: false
+    };
+}

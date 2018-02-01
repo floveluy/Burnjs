@@ -1,12 +1,9 @@
 {
   "name": "burnjs",
-  "version": "0.0.10",
+  "version": "0.0.14",
   "description": "",
   "main": "./index.js",
   "types": "./index.d.ts",
-  "bin": {
-    "gen": "gen.js"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && NODE_ENV=development node ./dist/app.js ",
@@ -20,6 +17,7 @@
     "@types/koa-router": "^7.0.27",
     "koa": "^2.4.1",
     "koa-router": "^7.3.0",
+    "mocha": "^5.0.0",
     "nodemon": "^1.14.11"
   }
 }
