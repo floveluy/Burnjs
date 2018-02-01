@@ -75,7 +75,6 @@ export class Loader {
 
         Object.keys(routing).forEach((key) => {
             const [method, url] = key.split(' ');
-            logger.blue(method + url)
             const d = routing[key];
             this.koaRouter[method](url, async (ctx: BaseContext) => {
                 const instance = new d.class(ctx, this.app);
@@ -95,7 +94,8 @@ export class Loader {
                 if (!loaded[property]) {
                     loaded[property] = {};
                     target.forEach((mod) => {
-                        loaded[property][mod.module.name] = new mod.module(this, app);
+                        const key = mod.filename.split('.')[0]
+                        loaded[property][key] = new mod.module(this, app);
                     })
                     return loaded.service
                 }
