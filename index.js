@@ -1,3 +1,5 @@
 const Burn = require('./dist/core').Burn;
 
-exports.default = Burn;
+exports.Burn = Burn;
+exports.Controller = Burn.Controller;
+exports.Service = Burn.Service;

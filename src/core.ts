@@ -15,8 +15,7 @@ export class Burn extends Koa {
     private ip: string;
     static Controller: typeof Controller = Controller;
     static Service: typeof Service = Service;
-
-    config: KV = {};
+    config: any = {};
 
     constructor() {
         super();
