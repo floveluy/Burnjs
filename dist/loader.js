@@ -21,7 +21,7 @@ class Loader {
         const merge = this.appDir() + url;
         return fs.readdirSync(merge).map((name) => {
             return {
-                module: require(merge + '/' + name),
+                module: require(merge + '/' + name).default,
                 filename: name
             };
         });
@@ -41,15 +41,16 @@ class Loader {
     loadController() {
         const controllers = this.fileLoader('app/controller');
         controllers.forEach((mod) => {
+            const filename = mod.filename.split('.')[0];
             const names = Object.getOwnPropertyNames(mod.module.prototype);
-            Object.defineProperty(this.controller, mod.module.name.toLowerCase(), {
+            Object.defineProperty(this.controller, filename.toLowerCase(), {
                 value: this.convertController(mod.module, names)
             });
         });
     }
     loadRouter() {
         const routerUrl = this.appDir() + 'app/router.js';
-        const routing = require(routerUrl)({
+        const routing = require(routerUrl).default({
             controller: this.controller
         });
         Object.keys(routing).forEach((key) => {
@@ -86,27 +87,30 @@ class Loader {
         this.loadToContext(service, this.app, 'service');
     }
     loadMiddleware() {
-        const middleware = this.fileLoader('app/middleware');
-        const registedMid = this.app.config['middleware'];
-        if (!registedMid)
-            return; //如果中间件不存在
-        registedMid.forEach((name) => {
-            logger_1.default.blue(name);
-            for (const index in middleware) {
-                const mod = middleware[index];
-                const fname = mod.filename.split('.')[0];
-                if (name === fname) {
-                    this.app.use(mod.module());
+        try {
+            const middleware = this.fileLoader('app/middleware');
+            const registedMid = this.app.config['middleware'];
+            if (!registedMid)
+                return; //如果中间件不存在
+            registedMid.forEach((name) => {
+                logger_1.default.blue(name);
+                for (const index in middleware) {
+                    const mod = middleware[index];
+                    const fname = mod.filename.split('.')[0];
+                    if (name === fname) {
+                        this.app.use(mod.module());
+                    }
                 }
-            }
-        });
+            });
+        }
+        catch (e) { }
     }
     loadConfig() {
         const configDef = this.appDir() + 'app/config/config.default.js';
         const configEnv = this.appDir()
             + (process.env.NODE_ENV === 'production' ? 'app/config/config.pro.js' : 'app/config/config.dev.js');
-        const conf = require(configEnv);
-        const confDef = require(configDef);
+        const conf = require(configEnv).default;
+        const confDef = require(configDef).default;
         const merge = Object.assign({}, conf, confDef);
         Object.defineProperty(this.app, 'config', {
             get: () => {

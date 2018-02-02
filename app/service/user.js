@@ -7,4 +7,4 @@ class user extends Service {
     }
 }
 
-module.exports = user;
+exports.default = user;

@@ -6,7 +6,7 @@ declare module "koa" {
     interface BaseContext {
         service: any;
     }
-    
+
 }
 
-export = Burn;
+export default Burn;

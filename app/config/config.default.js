@@ -1,3 +1,3 @@
-module.exports = {
+exports.default = {
     middleware: ['parse', 'mid'],
 }
