@@ -14,6 +14,6 @@ class user extends controller_1.Controller {
     }
 }
 __decorate([
-    blueprint_1.bp.post('/')
+    blueprint_1.bp.get('/uc')
 ], user.prototype, "index", null);
 exports.default = user;

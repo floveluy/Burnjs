@@ -3,6 +3,7 @@ import { Loader } from './loader';
 import logger from './logger';
 import { Controller } from './base/controller';
 import { Service } from './base/service';
+import * as req from 'request';
 
 
 export interface KV {
@@ -26,8 +27,26 @@ export class Burn extends Koa {
 
     run() {
         this.loader.load();
-        this.listen(this.port, this.ip, () => {
+        return this.listen(this.port, this.ip, () => {
             logger.green(`Burn服务器运行在:${this.ip}:${this.port}`)
         })
+    }
+    stop() {
+
+    }
+
+    async curl(url: string) {
+        const c = new Promise((resolve, reject) => {
+            req.get(url, undefined, (error: any, response: any, body: any) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve({ error, response, body });
+                }
+            })
+        })
+
+        return await c
+
     }
 }

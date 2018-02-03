@@ -1,4 +1,4 @@
-const Burn = require('./dist/core').Burn;
+const Burn = require('./dist/src/core').Burn;
 const Blueprint = require('./dist/src/blueprint').bp;
 
 exports.Burn = Burn;

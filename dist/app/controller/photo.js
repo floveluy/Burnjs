@@ -9,13 +9,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const controller_1 = require("../../src/base/controller");
 const blueprint_1 = require("../../src/blueprint");
 let photo = class photo extends controller_1.Controller {
-    async index() {
-        this.ctx.body = '123';
-        this.ctx.redirect('/user');
-        this.ctx.status = 301;
-    }
     async Get() {
-        this.ctx.body = this.app.config.database;
+        this.ctx.body = 'test';
     }
 };
 photo = __decorate([

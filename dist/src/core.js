@@ -5,6 +5,7 @@ const loader_1 = require("./loader");
 const logger_1 = require("./logger");
 const controller_1 = require("./base/controller");
 const service_1 = require("./base/service");
+const req = require("request");
 class Burn extends Koa {
     constructor() {
         super();
@@ -15,9 +16,24 @@ class Burn extends Koa {
     }
     run() {
         this.loader.load();
-        this.listen(this.port, this.ip, () => {
+        return this.listen(this.port, this.ip, () => {
             logger_1.default.green(`Burn服务器运行在:${this.ip}:${this.port}`);
         });
+    }
+    stop() {
+    }
+    async curl(url) {
+        const c = new Promise((resolve, reject) => {
+            req.get(url, undefined, (error, response, body) => {
+                if (error) {
+                    reject(error);
+                }
+                else {
+                    resolve({ error, response, body });
+                }
+            });
+        });
+        return await c;
     }
 }
 Burn.Controller = controller_1.Controller;
