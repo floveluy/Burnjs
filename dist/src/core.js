@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Koa = require("koa");
+const bodyParser = require("koa-bodyparser");
 const loader_1 = require("./loader");
 const logger_1 = require("./logger");
 const controller_1 = require("./base/controller");
@@ -15,6 +16,7 @@ class Burn extends Koa {
         this.ip = '127.0.0.1';
     }
     run() {
+        this.use(bodyParser());
         this.loader.load();
         return this.listen(this.port, this.ip, () => {
             logger_1.default.green(`Burn服务器运行在:${this.ip}:${this.port}`);

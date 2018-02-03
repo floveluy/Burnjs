@@ -1,4 +1,5 @@
 import * as Koa from 'koa';
+import bodyParser = require("koa-bodyparser");
 import { Loader } from './loader';
 import logger from './logger';
 import { Controller } from './base/controller';
@@ -26,6 +27,7 @@ export class Burn extends Koa {
     }
 
     run() {
+        this.use(bodyParser());
         this.loader.load();
         return this.listen(this.port, this.ip, () => {
             logger.green(`Burn服务器运行在:${this.ip}:${this.port}`)
