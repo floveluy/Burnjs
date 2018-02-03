@@ -1,6 +1,7 @@
 /// <reference types="node" />
 import * as Application from './src/core'
 import { BaseContext } from 'koa';
+import { blueprint } from './src/blueprint';
 
 interface FService { }
 interface FController { }
@@ -32,5 +33,9 @@ export class Service extends Application.Burn.Service {
 
     app: Burn;
 }
+
+
+export const Blueprint: blueprint;
+
 
 export as namespace Burn

@@ -9,6 +9,6 @@
         "src",
         "app"
     ],
-    "exec": "npm start",
+    "exec": "npm run start-ts",
     "ext": "ts"
 }

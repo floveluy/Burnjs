@@ -1,79 +1,45 @@
-import logger from "./logger";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const logger_1 = require("./logger");
 // import * as  KoaRouter from 'koa-router';
-
-
-const methods = ['get', 'post', 'patch', 'del', 'options', 'put']
-
-interface Bp {
-    [key: string]: Array<{
-        httpMethod: string,
-        constructor: any,
-        handler: string
-    }>
-}
-interface BP {
-    httpMethod: string,
-    constructor: any,
-    handler: string
-}
-interface Decorator {
-    (target: any, propertyKey: string): void
-}
-
-export interface blueprint extends Blueprint {
-    /**
-     * http post method
-     * @param url 
-     */
-    post(url: string): Decorator;
-
-    /**
-     * http get method
-     * @param url 
-     */
-    get(url: string): Decorator;
-    patch(url: string): Decorator;
-    del(url: string): Decorator;
-    options(url: string): Decorator;
-    put(url: string): Decorator;
-}
-
+const methods = ['get', 'post', 'patch', 'del', 'options', 'put'];
 class Blueprint {
-    router: Bp = {}
-    setRouter(url: string, blueprint: BP) {
+    constructor() {
+        this.router = {};
+    }
+    setRouter(url, blueprint) {
         const _bp = this.router[url];
         if (_bp) {
             //检查http method 是否冲突
             for (const index in _bp) {
                 const object = _bp[index];
                 if (object.httpMethod === blueprint.httpMethod) {
-                    logger.error(`路由地址 ${object.httpMethod} ${url} 已经存在`);
-                    return
+                    logger_1.default.error(`路由地址 ${object.httpMethod} ${url} 已经存在`);
+                    return;
                 }
             }
             //不冲突则注册
             this.router[url].push(blueprint);
-        } else {
+        }
+        else {
             this.router[url] = [];
             this.router[url].push(blueprint);
         }
     }
-
     /**
      * 给一个控制器添加restful方法
-     * 
+     *
      * Get(); => http GET
-     * 
+     *
      * Post(); => http POST
-     * 
+     *
      * Del(); => http DELETE
-     * 
+     *
      * Put(); => http PUT
-     * @param url 
+     * @param url
      */
-    restfulClass(url: string) {
-        return (Class: Function) => {
+    restfulClass(url) {
+        return (Class) => {
             ['Get', 'Post', 'Del', 'Put'].forEach((httpMethod) => {
                 const lowercase = httpMethod.toLowerCase();
                 const handler = Class.prototype[httpMethod];
@@ -82,31 +48,29 @@ class Blueprint {
                         httpMethod: lowercase,
                         constructor: Class,
                         handler: httpMethod
-                    })
+                    });
                 }
-            })
-        }
+            });
+        };
     }
     getRoute() {
         return this.router;
     }
 }
-
 methods.forEach((httpMethod) => {
     Object.defineProperty(Blueprint.prototype, httpMethod, {
         get: function () {
-            console.log(httpMethod)
-            return (url: string) => {
-                return (target: any, propertyKey: string) => {
-                    (<any>this).setRouter(url, {
+            console.log(httpMethod);
+            return (url) => {
+                return (target, propertyKey) => {
+                    this.setRouter(url, {
                         httpMethod: httpMethod,
                         constructor: target.constructor,
                         handler: propertyKey
-                    })
-                }
-            }
+                    });
+                };
+            };
         }
-    })
-})
-
-export const bp: blueprint = <any>new Blueprint
+    });
+});
+exports.bp = new Blueprint;

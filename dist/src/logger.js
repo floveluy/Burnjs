@@ -7,5 +7,8 @@ class Log {
     green(str) {
         console.log(`green:\x1b[32m ${str}\x1b[0m`);
     }
+    error(str) {
+        console.log(`[\x1b[31m Error \x1b[0m]:\x1b[31m ${str}\x1b[0m`);
+    }
 }
 exports.default = new Log;

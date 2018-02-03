@@ -2,7 +2,8 @@ import * as KoaRouter from 'koa-router';
 import * as fs from 'fs';
 import logger from './logger';
 import { BaseContext } from 'koa';
-import { Burn, KV } from './core';
+import { Burn } from './core';
+import { bp } from './blueprint';
 
 
 const HASLOADED = Symbol('hasloaded')
@@ -18,7 +19,6 @@ interface StringSub {
 }
 
 export class Loader {
-    private controller: KV = {};
     private koaRouter: any = new KoaRouter;
     private app: Burn;
 
@@ -27,11 +27,11 @@ export class Loader {
     }
 
     private appDir() {
-        const subString = removeString(__dirname, 'node_modules');
+        const subString = removeString(__dirname, 'node_modules');//如果包在node_modules中，正式环境
         if (subString.isFound) {
             return subString.source;
         }
-        return subString.source.substr(0, subString.source.length - 4);
+        return subString.source.substr(0, subString.source.length - 4) + '/';
     }
 
     private fileLoader(url: string): Array<FileModule> {
@@ -44,44 +44,22 @@ export class Loader {
             };
         });
     }
-    private convertController(ctler: object, funcNames: Array<string>) {
-        const tmp: { [key: string]: any } = {};
-        funcNames.forEach((name) => {
-            if (name !== 'constructor') {
-                tmp[name] = {
-                    class: ctler,
-                    funcName: name
-                };
-            }
-        })
-        return tmp;
-    }
 
     loadController() {
-        const controllers = this.fileLoader('app/controller');
-        controllers.forEach((mod) => {
-            const filename = mod.filename.split('.')[0];
-            const names = Object.getOwnPropertyNames(mod.module.prototype);
-            Object.defineProperty(this.controller, filename.toLowerCase(), {
-                value: this.convertController(mod.module, names)
-            })
-        })
+        this.fileLoader('app/controller');
     }
 
     loadRouter() {
-        const routerUrl = this.appDir() + 'app/router.js';
-        const routing = require(routerUrl).default({
-            controller: this.controller
-        });
-
-        Object.keys(routing).forEach((key) => {
-            const [method, url] = key.split(' ');
-            const d = routing[key];
-            this.koaRouter[method](url, async (ctx: BaseContext) => {
-                const instance = new d.class(ctx, this.app);
-                await instance[d.funcName]();
+        const r = bp.getRoute();
+        Object.keys(r).forEach((url) => {
+            r[url].forEach((object) => {
+                this.koaRouter[object.httpMethod](url, async (ctx: BaseContext) => {
+                    const instance = new object.constructor(ctx, this.app);
+                    await instance[object.handler]();
+                })
             })
-        });
+        })
+
         this.app.use(this.koaRouter.routes());
     }
 
