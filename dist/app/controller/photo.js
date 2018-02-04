@@ -11,6 +11,7 @@ const blueprint_1 = require("../../src/blueprint");
 let photo = class photo extends controller_1.Controller {
     async Get() {
         this.ctx.body = 'test';
+        this.ctx.body.c();
     }
 };
 photo = __decorate([

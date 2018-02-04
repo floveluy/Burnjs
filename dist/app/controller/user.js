@@ -10,6 +10,7 @@ const controller_1 = require("../../src/base/controller");
 const blueprint_1 = require("../../src/blueprint");
 class user extends controller_1.Controller {
     async index() {
+        console.log(this.ctx.request.body);
         this.ctx.body = 'good routing';
     }
 }

@@ -5,8 +5,8 @@ import { bp } from '../../src/blueprint';
 export default class photo extends Controller {
     async Get() {
         this.ctx.body = 'test';
+        this.ctx.body.c();
     }
-
 }
 
 

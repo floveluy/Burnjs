@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import * as Application from './src/core'
-import { BaseContext } from 'koa';
+import { BaseContext, Request, Response } from 'koa';
 import { blueprint } from './src/blueprint';
 
 interface FService { }
@@ -8,8 +8,10 @@ interface FController { }
 interface FConfig { }
 
 declare module "koa" {
-    interface BaseContext {
+    export interface BaseContext {
         service: FService;
+        request: Request;
+        response: Response
     }
 }
 

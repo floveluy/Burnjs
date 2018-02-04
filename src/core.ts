@@ -1,5 +1,4 @@
 import * as Koa from 'koa';
-import bodyParser = require("koa-bodyparser");
 import { Loader } from './loader';
 import logger from './logger';
 import { Controller } from './base/controller';
@@ -26,17 +25,50 @@ export class Burn extends Koa {
         this.ip = '127.0.0.1';
     }
 
-    run() {
+    loadDefaultMiddleware() {
+        const bodyParser = require('koa-bodyparser');
         this.use(bodyParser());
+    }
+    error() {
+        this.use(async (ctx, next) => {
+            try {
+                await next();
+                if (ctx.status === 404) {
+                    ctx.body = `<h1>404 not found</h1>`;
+                    ctx.set('Content-Type', 'text/html');
+                }
+            } catch (e) {
+                let status = e.status || 500;
+                let message = e.message || '服务器错误';
+                var err = `
+                <h3>${status}</h3>
+                <h3>${message}</h3>
+                `
+                e.stack.split('\n').forEach((stk: string, index: number) => {
+                    if (index !== 0) err = err + `<p>${stk}</p>`;
+                })
+
+                ctx.body = err;
+                ctx.set('Content-Type', 'text/html');
+            }
+        })
+    }
+
+    runInDev(handler: Function) {
+        if (process.env.NODE_ENV !== 'production') {
+            handler.bind(this)();
+        }
+    }
+
+    run() {
+        this.runInDev(this.error);
+        this.loadDefaultMiddleware();
+
         this.loader.load();
         return this.listen(this.port, this.ip, () => {
             logger.green(`Burn服务器运行在:${this.ip}:${this.port}`)
         })
     }
-    stop() {
-
-    }
-
     async curl(url: string) {
         const c = new Promise((resolve, reject) => {
             req.get(url, undefined, (error: any, response: any, body: any) => {
@@ -47,8 +79,6 @@ export class Burn extends Koa {
                 }
             })
         })
-
         return await c
-
     }
 }
