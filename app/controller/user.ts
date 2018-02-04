@@ -1,11 +1,15 @@
 import { Controller } from '../../src/base/controller';
 import { bp } from '../../src/blueprint';
 
+interface User {
+    content: string
+}
+
 
 export default class user extends Controller {
-    @bp.get('/uc')
-    async index() {
-        console.log(this.ctx.request.body)
+    @bp.post('/uc')
+    async index(body: User) {
+        console.log(body.content);
         this.ctx.body = 'good routing'
     }
 

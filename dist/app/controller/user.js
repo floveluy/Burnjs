@@ -9,12 +9,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const controller_1 = require("../../src/base/controller");
 const blueprint_1 = require("../../src/blueprint");
 class user extends controller_1.Controller {
-    async index() {
-        console.log(this.ctx.request.body);
+    async index(body) {
+        console.log(body.content);
         this.ctx.body = 'good routing';
     }
 }
 __decorate([
-    blueprint_1.bp.get('/uc')
+    blueprint_1.bp.post('/uc')
 ], user.prototype, "index", null);
 exports.default = user;

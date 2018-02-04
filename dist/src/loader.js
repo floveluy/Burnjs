@@ -35,7 +35,7 @@ class Loader {
             r[url].forEach((object) => {
                 this.koaRouter[object.httpMethod](url, async (ctx) => {
                     const instance = new object.constructor(ctx, this.app);
-                    await instance[object.handler]();
+                    await instance[object.handler](ctx.request.body);
                 });
             });
         });
