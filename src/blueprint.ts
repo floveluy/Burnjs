@@ -95,7 +95,6 @@ class Blueprint {
 methods.forEach((httpMethod) => {
     Object.defineProperty(Blueprint.prototype, httpMethod, {
         get: function () {
-            console.log(httpMethod)
             return (url: string) => {
                 return (target: any, propertyKey: string) => {
                     (<any>this).setRouter(url, {
