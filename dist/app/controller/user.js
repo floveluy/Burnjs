@@ -10,11 +10,16 @@ const controller_1 = require("../../src/base/controller");
 const blueprint_1 = require("../../src/blueprint");
 class user extends controller_1.Controller {
     async index(body) {
-        console.log(body.content);
-        this.ctx.body = 'good routing';
+        this.ctx.body = 'good';
+    }
+    async pxt(body) {
+        this.ctx.body = JSON.stringify(body);
     }
 }
 __decorate([
-    blueprint_1.bp.post('/uc')
+    blueprint_1.bp.get('/uc')
 ], user.prototype, "index", null);
+__decorate([
+    blueprint_1.bp.post('/pxt')
+], user.prototype, "pxt", null);
 exports.default = user;

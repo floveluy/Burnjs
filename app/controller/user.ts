@@ -7,12 +7,13 @@ interface User {
 
 
 export default class user extends Controller {
-    @bp.post('/uc')
+    @bp.get('/uc')
     async index(body: User) {
-        console.log(body.content);
-        this.ctx.body = 'good routing'
+        this.ctx.body = 'good'
     }
 
-    
-
+    @bp.post('/pxt')
+    async pxt(body: User) {
+        this.ctx.body = JSON.stringify(body);
+    }
 }

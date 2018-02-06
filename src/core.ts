@@ -81,4 +81,17 @@ export class Burn extends Koa {
         })
         return await c
     }
+
+    async post(url: string, json: object) {
+        const c = new Promise((resolve, reject) => {
+            req.post(url, { body: JSON.stringify(json) }, (error: any, response: any, body: any) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve({ error, response, body });
+                }
+            })
+        })
+        return await c
+    }
 }

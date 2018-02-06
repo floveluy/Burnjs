@@ -60,7 +60,6 @@ class Blueprint {
 methods.forEach((httpMethod) => {
     Object.defineProperty(Blueprint.prototype, httpMethod, {
         get: function () {
-            console.log(httpMethod);
             return (url) => {
                 return (target, propertyKey) => {
                     this.setRouter(url, {

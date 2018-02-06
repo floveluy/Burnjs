@@ -69,6 +69,19 @@ class Burn extends Koa {
         });
         return await c;
     }
+    async post(url, json) {
+        const c = new Promise((resolve, reject) => {
+            req.post(url, { body: JSON.stringify(json) }, (error, response, body) => {
+                if (error) {
+                    reject(error);
+                }
+                else {
+                    resolve({ error, response, body });
+                }
+            });
+        });
+        return await c;
+    }
 }
 Burn.Controller = controller_1.Controller;
 Burn.Service = service_1.Service;
