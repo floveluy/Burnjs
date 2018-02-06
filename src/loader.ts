@@ -133,16 +133,16 @@ export class Loader {
             logger.green('绿色')
             if (plugin.enable) {
                 const pkg = require(plugin.package);
-                pkg(this);
+                pkg(this.app);
             }
         }
     }
 
     load() {
+        this.loadConfig();
         this.loadPlugin();
         this.loadController();
         this.loadService();
-        this.loadConfig();
         this.loadMiddleware();
         this.loadRouter();//依赖loadController 
     }

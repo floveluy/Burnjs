@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 const Router = require("koa-router");
+const blueprint_1 = require("./blueprint");
 class Loader {
     constructor(app) {
         this.router = new Router;
@@ -33,27 +34,7 @@ class Loader {
     loadController() {
         const dirs = fs.readdirSync(__dirname + '/controller');
         dirs.forEach((filename) => {
-            const property = filename.split('.')[0];
-            const mod = require(__dirname + '/controller/' + filename).default;
-            if (mod) {
-                const methodNames = Object.getOwnPropertyNames(mod.prototype).filter((names) => {
-                    if (names !== 'constructor') {
-                        return names;
-                    }
-                });
-                Object.defineProperty(this.controller, property, {
-                    get() {
-                        const merge = {};
-                        methodNames.forEach((name) => {
-                            merge[name] = {
-                                type: mod,
-                                methodName: name
-                            };
-                        });
-                        return merge;
-                    }
-                });
-            }
+            require(__dirname + '/controller/' + filename).default;
         });
     }
     loadConfig() {
@@ -72,16 +53,13 @@ class Loader {
         this.loadController();
         this.loadService();
         this.loadConfig();
-        const mod = require(__dirname + '/router.js');
-        const routers = mod(this.controller);
-        console.log(routers);
-        Object.keys(routers).forEach((key) => {
-            const [method, path] = key.split(' ');
-            this.router[method](path, async (ctx) => {
-                const _class = routers[key].type;
-                const handler = routers[key].methodName;
-                const instance = new _class(ctx, this.app);
-                instance[handler]();
+        const r = blueprint_1.bp.getRoute();
+        Object.keys(r).forEach((url) => {
+            r[url].forEach((object) => {
+                this.router[object.httpMethod](url, async (ctx) => {
+                    const instance = new object.constructor(ctx, this.app);
+                    await instance[object.handler]();
+                });
             });
         });
         return this.router.routes();

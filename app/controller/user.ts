@@ -13,4 +13,6 @@ export default class user extends Controller {
         this.ctx.body = 'good routing'
     }
 
+    
+
 }
