@@ -130,7 +130,6 @@ export class Loader {
         const plugins = require(Pdir).default;
         for (const index in plugins) {
             const plugin: Plugin = plugins[index];
-            logger.green('绿色')
             if (plugin.enable) {
                 const pkg = require(plugin.package);
                 pkg(this.app);

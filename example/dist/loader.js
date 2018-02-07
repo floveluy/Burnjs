@@ -49,6 +49,16 @@ class Loader {
             }
         });
     }
+    loadPlugin() {
+        const pluginModule = require(__dirname + '/config/plugin.js');
+        Object.keys(pluginModule).forEach((key) => {
+            pluginModule[key];
+            if (pluginModule[key].enable) {
+                const plugin = require(pluginModule[key].packagePath);
+                plugin(this.app);
+            }
+        });
+    }
     loadRouter() {
         this.loadController();
         this.loadService();
