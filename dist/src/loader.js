@@ -101,7 +101,6 @@ class Loader {
         const plugins = require(Pdir).default;
         for (const index in plugins) {
             const plugin = plugins[index];
-            logger_1.default.green('绿色');
             if (plugin.enable) {
                 const pkg = require(plugin.package);
                 pkg(this.app);

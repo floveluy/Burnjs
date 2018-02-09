@@ -60,13 +60,13 @@ export class Burn extends Koa {
         }
     }
 
-    run() {
+    run(port?: number, ip?: string) {
         this.runInDev(this.error);
         this.loadDefaultMiddleware();
 
         this.loader.load();
-        return this.listen(this.port, this.ip, () => {
-            logger.green(`Burn服务器运行在:${this.ip}:${this.port}`)
+        return this.listen(port || this.port, ip || this.ip, () => {
+            logger.green(`Burn服务器启动成功，运行在:${ip || this.ip}:${port || this.port}`)
         })
     }
     async curl(url: string) {
