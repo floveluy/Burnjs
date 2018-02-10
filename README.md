@@ -1,5 +1,5 @@
 # Burnjs
-[!](https://github.com/floveluy/Burnjs/blob/master/burnlogo.png)
+![](https://github.com/floveluy/Burnjs/blob/master/burnlogo.png)
 
 
 
