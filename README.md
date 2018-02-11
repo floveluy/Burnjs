@@ -28,6 +28,7 @@ npm install
 │   ├── config  #配置文件目录
 │   │   ├── config.default.ts  #普通配置
 │   │   ├── config.dev.ts  #开发环境配置
+│   │   ├── plugin.ts  #插件配置
 │   ├── controller   #控制器目录
 │   │   └── index.ts   #
 │   ├── service     #业务逻辑目录
