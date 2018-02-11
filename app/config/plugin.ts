@@ -1,6 +1,6 @@
 export default {
-    sequelize: {
-        enable: true,
-        package: 'burn-sequelize'
-    }
+    // sequelize: {
+    //     enable: true,
+    //     package: 'burn-sequelize'
+    // }
 }
