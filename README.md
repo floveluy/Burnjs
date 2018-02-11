@@ -1,6 +1,6 @@
 ![](https://github.com/floveluy/Burnjs/blob/master/burnlogo.png)
 # Burnjs
-burnjs是系列教程[《使用Typescript封装一款基础企业级Web框架》](https://www.gitbook.com/book/215566435/-typescript-web/details)配套框架，全部使用Typescript编写完成。
+burnjs是系列教程[《使用Typescript封装一款装饰器风格的Web框架》](https://www.gitbook.com/book/215566435/-typescript-web/details)配套框架，全部使用Typescript编写完成。
 
 # 快速开始
 ```bash
