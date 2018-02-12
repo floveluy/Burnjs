@@ -20,6 +20,7 @@
     "@types/request": "^2.47.0",
     "burn-sequelize": "0.0.2",
     "chai": "^4.1.2",
+    "graceful": "^1.0.1",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.3.0",

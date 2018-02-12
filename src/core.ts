@@ -40,6 +40,8 @@ export class Burn extends Koa {
             } catch (e) {
                 let status = e.status || 500;
                 let message = e.message || '服务器错误';
+
+
                 var err = `
                 <h3>${status}</h3>
                 <h3>${message}</h3>
