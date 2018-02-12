@@ -24,5 +24,5 @@ if (cluster.isMaster) {
 } else {
     const app = new Burn;
 
-    app.run();
+    app.run(()=>{});
 }

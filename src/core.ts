@@ -1,9 +1,10 @@
 import * as Koa from 'koa';
 import { Loader } from './loader';
-import logger from './logger';
+// import logger from './logger';
 import { Controller } from './base/controller';
 import { Service } from './base/service';
 import * as req from 'request';
+import { blueprint, bp } from './blueprint';
 
 
 export interface KV {
@@ -16,6 +17,7 @@ export class Burn extends Koa {
     private ip: string;
     static Controller: typeof Controller = Controller;
     static Service: typeof Service = Service;
+    static Blueprint: blueprint = bp;
     config: any = {};
 
     constructor() {
@@ -62,13 +64,15 @@ export class Burn extends Koa {
         }
     }
 
-    run(port?: number, ip?: string) {
+
+
+    run(fn: (port: number, ip: string) => void, port?: number, ip?: string) {
         this.runInDev(this.error);
         this.loadDefaultMiddleware();
 
         this.loader.load();
         return this.listen(port || this.port, ip || this.ip, () => {
-            logger.green(`Burn服务器启动成功，运行在:${ip || this.ip}:${port || this.port}`)
+            fn && fn(port || this.port, ip || this.ip)
         })
     }
     async curl(url: string) {

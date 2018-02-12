@@ -19,5 +19,5 @@ if (cluster.isMaster) {
 }
 else {
     const app = new core_1.Burn;
-    app.run();
+    app.run(() => { });
 }

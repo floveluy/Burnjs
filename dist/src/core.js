@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Koa = require("koa");
 const loader_1 = require("./loader");
-const logger_1 = require("./logger");
+// import logger from './logger';
 const controller_1 = require("./base/controller");
 const service_1 = require("./base/service");
 const req = require("request");
+const blueprint_1 = require("./blueprint");
 class Burn extends Koa {
     constructor() {
         super();
@@ -48,12 +49,12 @@ class Burn extends Koa {
             handler.bind(this)();
         }
     }
-    run(port, ip) {
+    run(fn, port, ip) {
         this.runInDev(this.error);
         this.loadDefaultMiddleware();
         this.loader.load();
         return this.listen(port || this.port, ip || this.ip, () => {
-            logger_1.default.green(`Burn服务器启动成功，运行在:${ip || this.ip}:${port || this.port}`);
+            fn && fn(port || this.port, ip || this.ip);
         });
     }
     async curl(url) {
@@ -85,4 +86,5 @@ class Burn extends Koa {
 }
 Burn.Controller = controller_1.Controller;
 Burn.Service = service_1.Service;
+Burn.Blueprint = blueprint_1.bp;
 exports.Burn = Burn;
