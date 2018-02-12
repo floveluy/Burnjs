@@ -1,28 +1,40 @@
 import { Burn } from './core';
 import * as cluster from 'cluster';
 import * as os from 'os';
+import { EventEmitter } from 'events';
 
 
-export default class BurnCluster {
-    startCluster() {
+export default class BurnCluster extends EventEmitter {
+    constructor() {
+        super();
+
+
+    }
+
+    forkWorkers() {
         const numCPUs = os.cpus().length;
 
         if (cluster.isMaster) {
             // Fork workers.
+
+            console.log(`master进程#${process.pid}`)
             for (let i = 0; i < numCPUs; i++) {
                 cluster.fork();
             }
-            cluster.on('online', function (worker) {
+            cluster.on('fork', function (worker) {
                 console.log('worker ' + worker.process.pid + ' start');
                 worker.on('message', (msg) => {
                     console.log(msg + 'from ' + worker.process.pid)
                 })
-                worker.send('shit from master');
+            })
+
+            cluster.on('online', function (worker) {
+                worker.disconnect();
             })
 
             cluster.on('exit', function (worker, code, signal) {
                 console.log('worker ' + worker.process.pid + ' died');
-                cluster.fork();
+                // cluster.fork();
             });
 
             cluster.on('disconnect', function (worker) {
@@ -32,18 +44,27 @@ export default class BurnCluster {
                 console.log('工作进程 #' + worker.id + ' 断开了连接');
             })
 
+            cluster.on('listening', (worker, address) => {
+
+            });
+
 
         } else {
             const app = new Burn;
 
             app.run();
 
-            process.on('message', function(msg) {
-                console.log('3:', msg);
-              });
+            // process.on('message', function (msg) {
+            //     console.log('3:', msg);
+            // });
 
-            (<any>process).send('你好');
+            // (<any>process).send('你好');
         }
+    }
+
+
+    startCluster() {
+        this.forkWorkers();
     }
 }
 

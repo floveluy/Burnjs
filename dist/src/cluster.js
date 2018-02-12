@@ -3,24 +3,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("./core");
 const cluster = require("cluster");
 const os = require("os");
-class BurnCluster {
-    startCluster() {
+const events_1 = require("events");
+class BurnCluster extends events_1.EventEmitter {
+    constructor() {
+        super();
+    }
+    forkWorkers() {
         const numCPUs = os.cpus().length;
         if (cluster.isMaster) {
             // Fork workers.
+            console.log(`master进程#${process.pid}`);
             for (let i = 0; i < numCPUs; i++) {
                 cluster.fork();
             }
-            cluster.on('online', function (worker) {
+            cluster.on('fork', function (worker) {
                 console.log('worker ' + worker.process.pid + ' start');
                 worker.on('message', (msg) => {
                     console.log(msg + 'from ' + worker.process.pid);
                 });
-                worker.send('shit from master');
+            });
+            cluster.on('online', function (worker) {
+                worker.disconnect();
             });
             cluster.on('exit', function (worker, code, signal) {
                 console.log('worker ' + worker.process.pid + ' died');
-                cluster.fork();
+                // cluster.fork();
             });
             cluster.on('disconnect', function (worker) {
                 if (worker.isDead) {
@@ -28,15 +35,20 @@ class BurnCluster {
                 }
                 console.log('工作进程 #' + worker.id + ' 断开了连接');
             });
+            cluster.on('listening', (worker, address) => {
+            });
         }
         else {
             const app = new core_1.Burn;
             app.run();
-            process.on('message', function (msg) {
-                console.log('3:', msg);
-            });
-            process.send('你好');
+            // process.on('message', function (msg) {
+            //     console.log('3:', msg);
+            // });
+            // (<any>process).send('你好');
         }
+    }
+    startCluster() {
+        this.forkWorkers();
     }
 }
 exports.default = BurnCluster;
