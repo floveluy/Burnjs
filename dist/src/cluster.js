@@ -13,6 +13,10 @@ class BurnCluster {
             }
             cluster.on('online', function (worker) {
                 console.log('worker ' + worker.process.pid + ' start');
+                worker.on('message', (msg) => {
+                    console.log(msg + 'from ' + worker.process.pid);
+                });
+                worker.send('shit from master');
             });
             cluster.on('exit', function (worker, code, signal) {
                 console.log('worker ' + worker.process.pid + ' died');
@@ -28,6 +32,10 @@ class BurnCluster {
         else {
             const app = new core_1.Burn;
             app.run();
+            process.on('message', function (msg) {
+                console.log('3:', msg);
+            });
+            process.send('你好');
         }
     }
 }
