@@ -58,8 +58,8 @@ export class Loader {
         Object.keys(r).forEach((url) => {
             r[url].forEach((object) => {
                 this.koaRouter[object.httpMethod](url, async (ctx: BaseContext) => {
-                    const instance = new object.constructor(ctx, this.app);
-                    await instance[object.handler](ctx.request.body);
+                    const instance = new object.constructor(ctx);
+                    await instance[object.handler]();
                 })
             })
         })
