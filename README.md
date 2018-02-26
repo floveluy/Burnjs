@@ -1,4 +1,4 @@
-#Burnjs 与eggjs
+# Burnjs 与eggjs
 
 1. burnjs仿造eggjs，使用typescript写出来的一款框架，burnjs文件夹中包含了所有的「书写」以及学习步骤，教你一步一步的从底层的koa，封装成为一款类eggjs框架。
 
