@@ -13,7 +13,12 @@
 
 ### 书籍目录
 书放在ebook文件夹中
-
+1. 为什么使用typescript?
+    1. javascript在大型项目中的缺点
+    2. typescript学习资料
+2. eggjs的typescript环境搭建
+    1. 项目目录介绍
+    2. 
 
 
 
