@@ -30,7 +30,8 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "tree": "tree -I '*svn|*node_module*|example|dist|ebook'"
   },
   "ci": {
     "version": "8"

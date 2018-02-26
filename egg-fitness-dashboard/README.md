@@ -18,7 +18,11 @@
     2. typescript学习资料
 2. eggjs的typescript环境搭建
     1. 项目目录介绍
-    2. 
+    2. 一些typescript的配置
+    3. 小范围内理解eggjs加载机制
+3. typescript在egg中的基本使用
+4. egg-typescript插件开发
+5. egg ts 实战:fitness dashboard
 
 
 
