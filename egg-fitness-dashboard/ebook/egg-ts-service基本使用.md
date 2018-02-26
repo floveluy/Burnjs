@@ -33,7 +33,7 @@ declare module 'egg' {
     }
 }
 ```
-喜闻乐见的是，这里又双出现了```declare module 'egg'```，拓展的主角变成了```IService``
+喜闻乐见的是，这里又双出现了```declare module 'egg'```，拓展的主角变成了```IService```
 
 # 在controller中使用
 
@@ -76,7 +76,7 @@ Object.defineProperty(app.context,'service',{
 require('app/router.js')(app);
 ```
 
-不要被```Object.defineProperty``这种api吓到，其实这么做的原因是为了能够重写service属性的get方法，其目的是为了对大量的service做缓存。
+不要被```Object.defineProperty```这种api吓到，其实这么做的原因是为了能够重写service属性的get方法，其目的是为了对大量的service做缓存。
 
 不必每次初始化context对象的时候，都会去加载一次所有的service，内部怎么做的，可以看我之前的教程：
 
