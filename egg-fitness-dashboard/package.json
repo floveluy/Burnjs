@@ -31,7 +31,8 @@
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "tree": "tree -I '*svn|*node_module*|example|dist|ebook'"
+    "tree": "tree -I '*svn|*node_module*|example|dist|ebook'",
+    "tsc:w": "tsc -p tsconfig.json -w"
   },
   "ci": {
     "version": "8"
