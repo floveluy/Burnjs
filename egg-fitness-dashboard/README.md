@@ -21,7 +21,11 @@
     2. 一些typescript的配置
     3. 小范围内理解eggjs加载机制
 3. typescript在egg中的基本使用
-4. egg-typescript插件开发
+4. egg-typescript 装饰器的使用
+    1. 装饰器概念和基本使用
+    2. 为eggjs封装一个装饰器路由插件
+    3. json序列化和参数校验
+    4. 鉴权
 5. egg ts 实战:fitness dashboard
 
 
