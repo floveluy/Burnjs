@@ -24,8 +24,8 @@
     1. [自动编译+重启](https://github.com/floveluy/Burnjs/blob/master/egg-fitness-dashboard/ebook/egg-ts%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.md#%E8%87%AA%E5%8A%A8%E7%BC%96%E8%AF%91%E9%87%8D%E5%90%AF)
     2. [service编写](https://github.com/floveluy/Burnjs/blob/master/egg-fitness-dashboard/ebook/egg-ts-service%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
 4. egg-typescript 装饰器的使用
-    1. 装饰器概念和基本使用
-    2. 拓展知识，面向切面编程
+    1. [装饰器概念和基本使用](https://github.com/floveluy/Burnjs/blob/master/egg-fitness-dashboard/ebook/egg-%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8.md)
+    2. [拓展知识，面向切面编程](https://github.com/floveluy/Burnjs/blob/master/egg-fitness-dashboard/ebook/egg-%E8%A3%85%E9%A5%B0%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8.md#%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B)
     3. 为eggjs封装一个装饰器路由插件
     4. json序列化和参数校验
     5. 鉴权
