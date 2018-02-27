@@ -25,9 +25,10 @@
     2. [service编写](https://github.com/floveluy/Burnjs/blob/master/egg-fitness-dashboard/ebook/egg-ts-service%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8.md)
 4. egg-typescript 装饰器的使用
     1. 装饰器概念和基本使用
-    2. 为eggjs封装一个装饰器路由插件
-    3. json序列化和参数校验
-    4. 鉴权
+    2. 拓展知识，面向切面编程
+    3. 为eggjs封装一个装饰器路由插件
+    4. json序列化和参数校验
+    5. 鉴权
 5. egg ts 实战:fitness dashboard
 
 
