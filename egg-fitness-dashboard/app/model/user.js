@@ -4,9 +4,18 @@ const ModelDefine_1 = require("./ModelDefine");
 module.exports = (app) => {
     const Sequelize = app.Sequelize;
     const { STRING } = Sequelize;
-    const food = ModelDefine_1.ModelDefine(app, 'user', {
-        userName: STRING(20),
-        passWord: STRING(20)
+    const user = ModelDefine_1.ModelDefine(app, 'user', {
+        userName: {
+            type: STRING(20),
+            unique: true,
+            allowNull: false
+        },
+        passWord: {
+            type: STRING(20),
+            allowNull: false
+        },
+        token: STRING(20)
     });
-    return food;
+    // user.sync({ force: true })
+    return user;
 };

@@ -5,10 +5,19 @@ module.exports = (app: Application) => {
     const Sequelize = app.Sequelize
 
     const { STRING } = Sequelize
-    const food = ModelDefine(app, 'user', {
-        userName: STRING(20),
-        passWord: STRING(20)
+    const user = ModelDefine(app, 'user', {
+        userName: {
+            type: STRING(20),
+            unique: true,
+            allowNull: false
+        },
+        passWord: {
+            type: STRING(20),
+            allowNull: false
+        },
+        token: STRING(20)
     })
+    // user.sync({ force: true })
 
-    return food
+    return user
 }

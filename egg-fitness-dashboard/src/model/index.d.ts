@@ -5,4 +5,9 @@ declare module 'egg' {
         Sequelize: SequelizeStatic
         model: Sequelize
     }
+    interface Context {
+        model: {
+            User: Model<{}, {}>
+        }
+    }
 }

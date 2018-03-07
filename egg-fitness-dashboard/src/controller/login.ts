@@ -2,39 +2,46 @@
 
 import { Controller } from 'egg'
 import { bp } from '../lib/egg-blueprint/index'
-import { bodyValidator } from '../lib/decorator/validator'
+import { bodyValidator, Require } from '../lib/decorator/validator'
+import * as Crypto from 'crypto'
 
-function log() {
-    return function(target: any, key: string, descriptor: PropertyDescriptor) {
-        const originFunction: Function = descriptor.value //被装饰的函数被保存在value中.
-        descriptor.value = function() {
-            //重写被装饰的函数
-            console.log(`函数${key}()被访问了`)
-            originFunction.apply(this, arguments)
-        }
-    }
-}
+var LOGIN_RAND = Date.now()
 
 class UserEntity {
-    userName: string
+    @Require userName: string
+
+    @Require passWord: string
 }
 
 export default class LoginController extends Controller {
     @bp.post('/login')
     @bodyValidator(UserEntity)
-    async index() {
-        this.ctx.body = `hi, egg 3123`
+    async index(body: UserEntity) {
+        // await this.ctx.model.User.create({
+        //     userName: body.userName,
+        //     passWord: body.passWord
+        // })
 
-        // http -f POST http://127.0.0.1:7001/login content=好好学习 articleID='123532' title='测试'
+        const user: any | null = await this.ctx.model.User.findOne({
+            where: {
+                userName: body.userName
+            }
+        })
+
+        if (user) {
+            this.ctx.body = `hi, egg 3123`
+            console.log(user.passWord)
+        }
+
+        const sha1 = Crypto.createHash('sha1')
+
+        LOGIN_RAND++
+        sha1.update(body.userName + LOGIN_RAND)
+        // console.log(sha1.digest('hex'))
     }
 
-    @log()
+    @bp.get('/')
     async apple() {
-        this.ctx.body = `hi, egg `
-    }
-
-    @log()
-    async pink() {
         this.ctx.body = `hi, egg `
     }
 }

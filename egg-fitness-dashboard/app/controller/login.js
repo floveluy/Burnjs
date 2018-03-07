@@ -10,27 +10,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const egg_1 = require("egg");
 const index_1 = require("../lib/egg-blueprint/index");
 const validator_1 = require("../lib/decorator/validator");
-function log() {
-    return function (target, key, descriptor) {
-        const originFunction = descriptor.value; //被装饰的函数被保存在value中.
-        descriptor.value = function () {
-            //重写被装饰的函数
-            console.log(`函数${key}()被访问了`);
-            originFunction.apply(this, arguments);
-        };
-    };
-}
+const Crypto = require("crypto");
+var LOGIN_RAND = Date.now();
 class UserEntity {
 }
+__decorate([
+    validator_1.Require
+], UserEntity.prototype, "userName", void 0);
+__decorate([
+    validator_1.Require
+], UserEntity.prototype, "passWord", void 0);
 class LoginController extends egg_1.Controller {
-    async index() {
-        this.ctx.body = `hi, egg 3123`;
-        // http -f POST http://127.0.0.1:7001/login content=好好学习 articleID='123532' title='测试'
+    async index(body) {
+        // await this.ctx.model.User.create({
+        //     userName: body.userName,
+        //     passWord: body.passWord
+        // })
+        const user = await this.ctx.model.User.findOne({
+            where: {
+                userName: body.userName
+            }
+        });
+        if (user) {
+            this.ctx.body = `hi, egg 3123`;
+            console.log(user.passWord);
+        }
+        const sha1 = Crypto.createHash('sha1');
+        LOGIN_RAND++;
+        sha1.update(body.userName + LOGIN_RAND);
+        // console.log(sha1.digest('hex'))
     }
     async apple() {
-        this.ctx.body = `hi, egg `;
-    }
-    async pink() {
         this.ctx.body = `hi, egg `;
     }
 }
@@ -39,9 +49,6 @@ __decorate([
     validator_1.bodyValidator(UserEntity)
 ], LoginController.prototype, "index", null);
 __decorate([
-    log()
+    index_1.bp.get('/')
 ], LoginController.prototype, "apple", null);
-__decorate([
-    log()
-], LoginController.prototype, "pink", null);
 exports.default = LoginController;
