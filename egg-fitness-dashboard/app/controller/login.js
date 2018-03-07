@@ -8,21 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const egg_1 = require("egg");
+const index_1 = require("../lib/egg-blueprint/index");
+const validator_1 = require("../lib/decorator/validator");
 function log() {
     return function (target, key, descriptor) {
         const originFunction = descriptor.value; //被装饰的函数被保存在value中.
         descriptor.value = function () {
+            //重写被装饰的函数
             console.log(`函数${key}()被访问了`);
             originFunction.apply(this, arguments);
         };
     };
 }
-class HomeController extends egg_1.Controller {
+class UserEntity {
+}
+class LoginController extends egg_1.Controller {
     async index() {
-        this.ctx.body = `hi, egg `;
-    }
-    async book() {
-        this.ctx.body = `hi, egg `;
+        this.ctx.body = `hi, egg 3123`;
+        // http -f POST http://127.0.0.1:7001/login content=好好学习 articleID='123532' title='测试'
     }
     async apple() {
         this.ctx.body = `hi, egg `;
@@ -32,15 +35,13 @@ class HomeController extends egg_1.Controller {
     }
 }
 __decorate([
-    log()
-], HomeController.prototype, "index", null);
+    index_1.bp.post('/login'),
+    validator_1.bodyValidator(UserEntity)
+], LoginController.prototype, "index", null);
 __decorate([
     log()
-], HomeController.prototype, "book", null);
+], LoginController.prototype, "apple", null);
 __decorate([
     log()
-], HomeController.prototype, "apple", null);
-__decorate([
-    log()
-], HomeController.prototype, "pink", null);
-exports.default = HomeController;
+], LoginController.prototype, "pink", null);
+exports.default = LoginController;

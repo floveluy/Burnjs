@@ -1,0 +1,8 @@
+{
+  "name": "egg-blueprint",
+  "version": "1.0.0",
+  "description": "egg blueprint plugin",
+  "eggPlugin": {
+    "name": "blueprint"
+  }
+}
