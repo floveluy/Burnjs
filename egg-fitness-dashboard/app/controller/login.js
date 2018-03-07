@@ -21,11 +21,8 @@ __decorate([
     validator_1.Require
 ], UserEntity.prototype, "passWord", void 0);
 class LoginController extends egg_1.Controller {
-    async index(body) {
-        // await this.ctx.model.User.create({
-        //     userName: body.userName,
-        //     passWord: body.passWord
-        // })
+    async login(body) {
+        //账号密码->是否存在->登陆结果
         const user = await this.ctx.model.User.findOne({
             where: {
                 userName: body.userName
@@ -33,7 +30,9 @@ class LoginController extends egg_1.Controller {
         });
         if (user) {
             this.ctx.body = `hi, egg 3123`;
-            console.log(user.passWord);
+            if (user.passWord === body.passWord) {
+                console.log('登陆成功');
+            }
         }
         const sha1 = Crypto.createHash('sha1');
         LOGIN_RAND++;
@@ -47,7 +46,7 @@ class LoginController extends egg_1.Controller {
 __decorate([
     index_1.bp.post('/login'),
     validator_1.bodyValidator(UserEntity)
-], LoginController.prototype, "index", null);
+], LoginController.prototype, "login", null);
 __decorate([
     index_1.bp.get('/')
 ], LoginController.prototype, "apple", null);

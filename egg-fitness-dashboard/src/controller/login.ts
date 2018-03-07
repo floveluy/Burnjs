@@ -16,11 +16,8 @@ class UserEntity {
 export default class LoginController extends Controller {
     @bp.post('/login')
     @bodyValidator(UserEntity)
-    async index(body: UserEntity) {
-        // await this.ctx.model.User.create({
-        //     userName: body.userName,
-        //     passWord: body.passWord
-        // })
+    async login(body: UserEntity) {
+        //账号密码->是否存在->登陆结果
 
         const user: any | null = await this.ctx.model.User.findOne({
             where: {
@@ -30,7 +27,10 @@ export default class LoginController extends Controller {
 
         if (user) {
             this.ctx.body = `hi, egg 3123`
-            console.log(user.passWord)
+
+            if (user.passWord === body.passWord) {
+                console.log('登陆成功')
+            }
         }
 
         const sha1 = Crypto.createHash('sha1')

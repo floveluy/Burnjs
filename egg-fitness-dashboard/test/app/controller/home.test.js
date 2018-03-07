@@ -11,12 +11,12 @@ describe('test/app/controller/home.test.js', () => {
         // yield ctx.service.xx();
     })
 
-    it('should GET /', () => {
+    it('loginCheck /login', () => {
         return app
             .httpRequest()
             .post('/login')
             .set('Content-Type', 'application/json')
             .send('{"userName":"tj","passWord":"tobi"}')
-            .expect(400)
+            .expect(200)
     })
 })
