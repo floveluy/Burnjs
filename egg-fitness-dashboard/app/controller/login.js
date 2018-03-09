@@ -11,7 +11,6 @@ const index_1 = require("../lib/egg-blueprint/index");
 const validator_1 = require("../lib/decorator/validator");
 const controller_base_1 = require("./controller-base");
 const auth_1 = require("../lib/decorator/auth");
-var LOGIN_RAND = Date.now();
 class UserEntity {
 }
 __decorate([
@@ -24,12 +23,12 @@ class LoginController extends controller_base_1.ControllerBase {
     async login(body) {
         //账号密码->是否存在->登陆结果
         const app = this.app;
-        console.log(Date.now());
         const user = await this.ctx.model.User.findOne({
             where: {
                 userName: body.userName
             }
         });
+        console.log(body);
         if (user) {
             if (user.passWord === body.passWord) {
                 const token = app.jwt.sign({ foo: 'bar' }, app.config.jwt.secret); //生成一个token发给前端
@@ -39,9 +38,6 @@ class LoginController extends controller_base_1.ControllerBase {
             }
         }
         console.log(Date.now());
-        // const sha1 = Crypto.createHash('sha1')
-        // LOGIN_RAND++
-        // sha1.update(body.userName + LOGIN_RAND)
     }
     async apple() {
         const ctx = this.ctx;

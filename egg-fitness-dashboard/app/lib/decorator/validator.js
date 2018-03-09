@@ -29,14 +29,17 @@ exports.bodyValidator = bodyValidator;
 function Require(target, key) {
     Object.defineProperty(target, key, {
         get() {
-            if (this.prop === void 666) {
+            console.log(this.Property);
+            if (this.Property[key] === void 666) {
                 throw new Error(`没有${key}`);
             }
-            return this.prop;
+            return this.Property[key];
         },
         set(prop) {
-            ;
-            this.prop = prop;
+            if (this.Property === void 666) {
+                this.Property = {};
+            }
+            this.Property[key] = prop;
         }
     });
 }

@@ -16,7 +16,7 @@ describe('test/app/controller/home.test.js', () => {
             .httpRequest()
             .post('/login')
             .set('Content-Type', 'application/json')
-            .send('{"userName":"tj","passWord":"tobi"}')
+            .send('{"userName":"floveluy","passWord":"metal_gear2"}')
             .expect(200)
     })
 

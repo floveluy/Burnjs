@@ -16,6 +16,10 @@ module.exports = (app) => {
         },
         token: STRING(20)
     });
-    // user.sync({ force: true })
+    //   user.sync({ force: true })
+    //   user.create({
+    //     userName: 'floveluy',
+    //     passWord: 'metal_gear2'
+    //   })
     return user;
 };
