@@ -1,5 +1,4 @@
 "use strict";
-//home.ts
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,10 +6,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const egg_1 = require("egg");
+//home.ts
 const index_1 = require("../lib/egg-blueprint/index");
 const validator_1 = require("../lib/decorator/validator");
 const Crypto = require("crypto");
+const controller_base_1 = require("./controller-base");
 var LOGIN_RAND = Date.now();
 class UserEntity {
 }
@@ -20,7 +20,7 @@ __decorate([
 __decorate([
     validator_1.Require
 ], UserEntity.prototype, "passWord", void 0);
-class LoginController extends egg_1.Controller {
+class LoginController extends controller_base_1.ControllerBase {
     async login(body) {
         //账号密码->是否存在->登陆结果
         const user = await this.ctx.model.User.findOne({
@@ -29,18 +29,28 @@ class LoginController extends egg_1.Controller {
             }
         });
         if (user) {
-            this.ctx.body = `hi, egg 3123`;
             if (user.passWord === body.passWord) {
                 console.log('登陆成功');
+                const app = this.app;
+                const token = app.jwt.sign({ foo: 'bar' }, app.config.jwt.secret); //生成一个token发给前端
+                this.ctx.body = { token };
             }
         }
         const sha1 = Crypto.createHash('sha1');
         LOGIN_RAND++;
         sha1.update(body.userName + LOGIN_RAND);
-        // console.log(sha1.digest('hex'))
     }
     async apple() {
-        this.ctx.body = `hi, egg `;
+        const ctx = this.ctx;
+        const app = this.app;
+        // console.log(ctx.session.key)
+        let n = ctx.session.wex || 0;
+        ctx.session.wex = ++n;
+        ctx.body = ' wex';
+        // var token = (ctx.request.body && (<any>ctx.request.body).access_token) || (ctx.request.query && ctx.request.query.access_token)
+        const token = app.jwt.sign({ foo: 'bar' }, app.config.jwt.secret);
+        var decoded = app.jwt.verify(token, app.config.jwt.secret);
+        console.log(decoded);
     }
 }
 __decorate([
@@ -48,6 +58,6 @@ __decorate([
     validator_1.bodyValidator(UserEntity)
 ], LoginController.prototype, "login", null);
 __decorate([
-    index_1.bp.get('/')
+    controller_base_1.ControllerBase.route.get('/')
 ], LoginController.prototype, "apple", null);
 exports.default = LoginController;

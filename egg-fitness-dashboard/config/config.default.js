@@ -40,5 +40,11 @@ module.exports = appInfo => {
         formLimit: '1mb'
     }
 
+    config.jwt = {
+        secret: '123456',
+        enable: true, // default is false
+        match: '/success' // �optional
+    }
+
     return config
 }

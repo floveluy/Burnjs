@@ -6,8 +6,10 @@
   "dependencies": {
     "@types/sequelize": "^4.27.8",
     "egg": "^2.2.1",
+    "egg-jwt": "^2.2.1",
     "egg-scripts": "^2.5.0",
     "egg-sequelize": "^3.1.2",
+    "egg-session": "^3.1.0",
     "mysql2": "^1.5.2",
     "sequelize": "^4.35.2"
   },
