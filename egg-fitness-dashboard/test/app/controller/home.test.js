@@ -19,4 +19,23 @@ describe('test/app/controller/home.test.js', () => {
             .send('{"userName":"tj","passWord":"tobi"}')
             .expect(200)
     })
+
+    it('不登陆不能访问 /', () => {
+        return app
+            .httpRequest()
+            .get('/')
+            .set('Content-Type', 'application/json')
+            .send('{"userName":"tj","passWord":"tobi"}')
+            .expect(401)
+    })
+
+    it('登陆了以后就可以访问了 /', () => {
+        return app
+            .httpRequest()
+            .get('/')
+            .set('Authentication',"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE1MjA1NjY5Mjh9.OP8r2-JqzwuujfgKTq4KBRHXmUGnr_WFUx3uSmRN6hM")
+            .set('Content-Type', 'application/json')
+            .send('{"userName":"tj","passWord":"tobi"}')
+            .expect(200)
+    })
 })
