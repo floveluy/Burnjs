@@ -2,12 +2,10 @@ export class SerializationHelper {
     static toInstance<T>(obj: any, json: any): T {
         const newObj = new obj()
 
-        for (var propName in json) {   
+        for (var propName in json) {
             newObj[propName] = json[propName]
-
         }
 
-        
         return newObj
     }
 }
@@ -33,17 +31,16 @@ export function bodyValidator<T>(obj: T) {
 export function Require(target: any, key: string) {
     Object.defineProperty(target, key, {
         get() {
-            console.log((this as any).Property)
             if ((this as any).Property[key] === void 666) {
                 throw new Error(`没有${key}`)
             }
             return (this as any).Property[key]
         },
         set(prop) {
-            if((this as any).Property === void 666){
-                (this as any).Property = {};
+            if ((this as any).Property === void 666) {
+                ;(this as any).Property = {}
             }
-            (this as any).Property[key] = prop;
+            ;(this as any).Property[key] = prop
         }
     })
 }
@@ -58,4 +55,3 @@ export function log() {
         }
     }
 }
-

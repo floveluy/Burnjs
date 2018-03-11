@@ -29,7 +29,6 @@ exports.bodyValidator = bodyValidator;
 function Require(target, key) {
     Object.defineProperty(target, key, {
         get() {
-            console.log(this.Property);
             if (this.Property[key] === void 666) {
                 throw new Error(`没有${key}`);
             }
@@ -37,8 +36,10 @@ function Require(target, key) {
         },
         set(prop) {
             if (this.Property === void 666) {
+                ;
                 this.Property = {};
             }
+            ;
             this.Property[key] = prop;
         }
     });

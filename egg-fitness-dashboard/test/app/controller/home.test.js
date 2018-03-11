@@ -38,4 +38,13 @@ describe('test/app/controller/home.test.js', () => {
             .send('{"userName":"tj","passWord":"tobi"}')
             .expect(200)
     })
+
+    it('注册 /register', () => {
+        return app
+            .httpRequest()
+            .post('/register')
+            .set('Content-Type', 'application/json')
+            .send('{"userName":"floveluy","passWord":"metal_gear2"}')
+            .expect(200)
+    })
 })

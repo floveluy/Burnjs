@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 //home.ts
-const index_1 = require("../lib/egg-blueprint/index");
 const validator_1 = require("../lib/decorator/validator");
 const controller_base_1 = require("./controller-base");
 const auth_1 = require("../lib/decorator/auth");
@@ -19,6 +18,8 @@ __decorate([
 __decorate([
     validator_1.Require
 ], UserEntity.prototype, "passWord", void 0);
+class RegisterEntity extends UserEntity {
+}
 class LoginController extends controller_base_1.ControllerBase {
     async login(body) {
         //账号密码->是否存在->登陆结果
@@ -28,7 +29,6 @@ class LoginController extends controller_base_1.ControllerBase {
                 userName: body.userName
             }
         });
-        console.log(body);
         if (user) {
             if (user.passWord === body.passWord) {
                 const token = app.jwt.sign({ foo: 'bar' }, app.config.jwt.secret); //生成一个token发给前端
@@ -37,19 +37,28 @@ class LoginController extends controller_base_1.ControllerBase {
                 });
             }
         }
-        console.log(Date.now());
     }
     async apple() {
         const ctx = this.ctx;
         ctx.body = ' wex';
     }
+    async quickRegister(body) {
+        await this.ctx.model.User.create({
+            userName: body.userName,
+            passWord: body.passWord
+        });
+    }
 }
 __decorate([
-    index_1.bp.post('/login'),
+    controller_base_1.ControllerBase.route.post('/login'),
     validator_1.bodyValidator(UserEntity)
 ], LoginController.prototype, "login", null);
 __decorate([
     controller_base_1.ControllerBase.route.get('/'),
     auth_1.Auth
 ], LoginController.prototype, "apple", null);
+__decorate([
+    controller_base_1.ControllerBase.route.post('/register'),
+    validator_1.bodyValidator(RegisterEntity)
+], LoginController.prototype, "quickRegister", null);
 exports.default = LoginController;
