@@ -29,20 +29,14 @@ class LoginController extends controller_base_1.ControllerBase {
                 userName: body.userName
             }
         });
-        if (user) {
-            if (user.passWord === body.password) {
-                const token = app.jwt.sign({ token: 'asldjklj123jh1231hkjhlkjsakldjad123' }, app.config.jwt.secret); //生成一个token发给前端
-                this.QuickSuccess({
-                    token
-                });
-            }
-            else {
-                this.QuickFail('账号或者密码错误');
-            }
-        }
-        else {
-            this.QuickFail('没有这个用户');
-        }
+        if (user === null)
+            throw new Error('没有这个用户');
+        if (user.passWord !== body.password)
+            throw new Error('账号或者密码错误');
+        const token = app.jwt.sign({ token: 'asldjklj123jh1231hkjhlkjsakldjad123' }, app.config.jwt.secret); //生成一个token发给前端
+        this.QuickSuccess({
+            token
+        });
     }
     async apple() {
         const ctx = this.ctx;

@@ -25,6 +25,9 @@ __decorate([
 __decorate([
     validator_1.Require
 ], SetEntity.prototype, "sets", void 0);
+__decorate([
+    validator_1.Require
+], SetEntity.prototype, "date", void 0);
 class Exercise extends controller_base_1.ControllerBase {
     async createExercise(body) {
         const user = await this.CurrentUser();
@@ -37,24 +40,39 @@ class Exercise extends controller_base_1.ControllerBase {
     }
     async addSets(body) {
         const user = await this.CurrentUser();
-        await this.ctx.model.Exercise.update({
-            data: body.sets
-        }, {
-            where: {
-                user: user.userName
-            }
+        await this.ctx.model.Set.create({
+            data: body.sets,
+            date: body.date,
+            user: user.userName,
+            name: body.name
         });
         this.QuickSuccess({});
     }
+    async ExerciseHistory() {
+        const id = this.ctx.params.id;
+        const u = await this.CurrentUser();
+        const history = await this.ctx.model.Set.findAll({
+            where: {
+                id: id,
+                user: u.userName
+            }
+        });
+        this.QuickSuccess({ history });
+    }
     async getExercise() {
         const u = await this.CurrentUser();
-        const exercise = await this.ctx.model.Exercise.findAll({
-            where: {
-                user: u.userName
-            },
-            attributes: ['id', 'type', 'name', 'data']
-        });
-        this.QuickSuccess({ exercise });
+        try {
+            const exercise = await this.ctx.model.Exercise.findAll({
+                where: {
+                    user: u.userName
+                },
+                attributes: ['id', 'type', 'name']
+            });
+            this.QuickSuccess({ exercise });
+        }
+        catch (e) {
+            console.log(e);
+        }
     }
 }
 __decorate([
@@ -63,10 +81,14 @@ __decorate([
     auth_1.Auth
 ], Exercise.prototype, "createExercise", null);
 __decorate([
-    controller_base_1.ControllerBase.route.put('/exercise/create'),
+    controller_base_1.ControllerBase.route.post('/exercise/set/create'),
     validator_1.bodyValidator(SetEntity),
     auth_1.Auth
 ], Exercise.prototype, "addSets", null);
+__decorate([
+    controller_base_1.ControllerBase.route.get('/exercise/history/:id'),
+    auth_1.Auth
+], Exercise.prototype, "ExerciseHistory", null);
 __decorate([
     controller_base_1.ControllerBase.route.get('/exercise'),
     auth_1.Auth

@@ -10,6 +10,7 @@ class ExerciseEntity {
 class SetEntity {
     @Require name: string
     @Require sets: string
+    @Require date: string
 }
 
 export default class Exercise extends ControllerBase {
@@ -26,34 +27,49 @@ export default class Exercise extends ControllerBase {
         this.QuickSuccess({})
     }
 
-    @ControllerBase.route.put('/exercise/create')
+    @ControllerBase.route.post('/exercise/set/create')
     @bodyValidator(SetEntity)
     @Auth
     async addSets(body: SetEntity) {
         const user = await this.CurrentUser()
-        await this.ctx.model.Exercise.update(
-            {
-                data: body.sets
-            },
-            {
-                where: {
-                    user: user.userName
-                }
-            }
-        )
+        await this.ctx.model.Set.create({
+            data: body.sets,
+            date: body.date,
+            user: user.userName,
+            name: body.name
+        })
         this.QuickSuccess({})
+    }
+
+    @ControllerBase.route.get('/exercise/history/:id')
+    @Auth
+    async ExerciseHistory() {
+        const id = this.ctx.params.id
+        const u = await this.CurrentUser()
+        const history = await this.ctx.model.Set.findAll({
+            where: {
+                id: id,
+                user: u.userName
+            }
+        })
+        this.QuickSuccess({ history })
     }
 
     @ControllerBase.route.get('/exercise')
     @Auth
     async getExercise() {
         const u = await this.CurrentUser()
-        const exercise = await this.ctx.model.Exercise.findAll({
-            where: {
-                user: u.userName
-            },
-            attributes: ['id', 'type', 'name', 'data']
-        })
-        this.QuickSuccess({ exercise })
+
+        try {
+            const exercise = await this.ctx.model.Exercise.findAll({
+                where: {
+                    user: u.userName
+                },
+                attributes: ['id', 'type', 'name']
+            })
+            this.QuickSuccess({ exercise })
+        } catch (e) {
+            console.log(e)
+        }
     }
 }

@@ -12,6 +12,15 @@ declare module 'egg' {
                 { type: string; name: string; data: any; user: string },
                 {}
             >
+            Set: Model<
+                {
+                    name: string
+                    data: any
+                    user: string
+                    id: number
+                },
+                {}
+            >
         }
     }
 }

@@ -24,12 +24,13 @@ function Auth(target, key, descriptor) {
             await originFun.apply(this, arguments);
         }
         catch (e) {
-            if (e.message === 'invalid signature') {
-                c.ctx.body = c.QuickFail('login invalid');
+            if (e.message === 'invalid signature' ||
+                e.message === 'jwt malformed') {
+                c.QuickFail('login invalid');
                 c.ctx.status = 401;
             }
             if (e.message === 'user-fetch-fail') {
-                c.ctx.body = c.QuickFail('not such user');
+                c.QuickFail('not such user');
                 c.ctx.status = 401;
             }
         }

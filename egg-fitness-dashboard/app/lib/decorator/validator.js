@@ -20,7 +20,7 @@ function bodyValidator(obj) {
             }
             catch (e) {
                 ;
-                this.QuickFail({});
+                this.QuickFail(e.message);
                 this.ctx.status = 400;
             }
         };

@@ -4,7 +4,7 @@ const ModelDefine_1 = require("./ModelDefine");
 module.exports = (app) => {
     const Sequelize = app.Sequelize;
     const { STRING } = Sequelize;
-    const model = ModelDefine_1.ModelDefine(app, 'exercise', {
+    const model = ModelDefine_1.ModelDefine(app, 'set', {
         type: {
             type: STRING(20),
             allowNull: false
