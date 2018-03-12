@@ -11,7 +11,7 @@ function Auth(target, key, descriptor) {
     descriptor.value = async function () {
         var c = this;
         try {
-            var token = c.ctx.request.headers['authentication'];
+            var token = c.ctx.request.headers['authorization'];
             if (token) {
                 token = token.split(' ')[1];
             }
@@ -19,12 +19,17 @@ function Auth(target, key, descriptor) {
                 token =
                     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE1MjA1NjY5Mjh9.OP8r2-asdasda';
             }
-            c.app.jwt.verify(token, c.app.config.jwt.secret);
+            var decoded = c.app.jwt.verify(token, c.app.config.jwt.secret);
+            c.ctx.jwtDecode = decoded;
             await originFun.apply(this, arguments);
         }
         catch (e) {
             if (e.message === 'invalid signature') {
-                c.ctx.body = 'login invalid';
+                c.ctx.body = c.QuickFail('login invalid');
+                c.ctx.status = 401;
+            }
+            if (e.message === 'user-fetch-fail') {
+                c.ctx.body = c.QuickFail('not such user');
                 c.ctx.status = 401;
             }
         }

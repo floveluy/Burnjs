@@ -19,7 +19,8 @@ function bodyValidator(obj) {
                 await originFun.call(this, body);
             }
             catch (e) {
-                console.log(e);
+                ;
+                this.QuickFail({});
                 this.ctx.status = 400;
             }
         };

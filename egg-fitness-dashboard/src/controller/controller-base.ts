@@ -32,4 +32,24 @@ export class ControllerBase extends Controller {
             'Content-Type': 'application/json;charset=utf-8'
         })
     }
+
+    /**
+     * 获取当前用户信息
+     */
+    async CurrentUser() {
+        const { token } = this.ctx.jwtDecode
+        const user = await this.ctx.model.User.findOne({
+            where: {
+                token
+            }
+        })
+        if (user) return user
+        throw Error('user-fetch-fail')
+    }
+}
+
+declare module 'egg' {
+    interface Context {
+        jwtDecode: any
+    }
 }

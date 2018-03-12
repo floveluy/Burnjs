@@ -21,7 +21,7 @@ export function bodyValidator<T>(obj: T) {
                 )
                 await originFun.call(this, body)
             } catch (e) {
-                console.log(e)
+                ;(<any>this).QuickFail({})
                 ;(<any>this).ctx.status = 400
             }
         }

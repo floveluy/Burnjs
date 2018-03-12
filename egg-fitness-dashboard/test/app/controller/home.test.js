@@ -1,6 +1,9 @@
 'use strict'
 
 const { app, assert } = require('egg-mock/bootstrap')
+const jwtCode =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6ImFzbGRqa2xqMTIzamgxMjMxaGtqaGxranNha2xkamFkMTIzIiwiaWF0IjoxNTIwODA4OTIwfQ.0DlIfhfwn1XAYd66vEImgdFbncJrYDbYx_yQByIrCvo'
+exports.jwtCode = jwtCode
 
 describe('test/app/controller/home.test.js', () => {
     it('should assert', function*() {
@@ -33,18 +36,18 @@ describe('test/app/controller/home.test.js', () => {
         return app
             .httpRequest()
             .get('/')
-            .set('Authentication',"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJpYXQiOjE1MjA1NjY5Mjh9.OP8r2-JqzwuujfgKTq4KBRHXmUGnr_WFUx3uSmRN6hM")
+            .set('Authentication', 'Bearer ' + jwtCode)
             .set('Content-Type', 'application/json')
             .send('{"userName":"tj","passWord":"tobi"}')
             .expect(200)
     })
 
-    it('注册 /register', () => {
+    it('如果存在则失败 /register', () => {
         return app
             .httpRequest()
             .post('/register')
             .set('Content-Type', 'application/json')
             .send('{"userName":"floveluy","passWord":"metal_gear2"}')
-            .expect(200)
+            .expect(409)
     })
 })

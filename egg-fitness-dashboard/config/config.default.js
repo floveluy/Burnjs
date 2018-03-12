@@ -32,7 +32,8 @@ module.exports = appInfo => {
     config.security = {
         csrf: {
             enable: false
-        }
+        },
+        domainWhiteList: ['http://localhost:3000']
     }
 
     config.bodyParser = {

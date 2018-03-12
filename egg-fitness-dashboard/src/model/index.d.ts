@@ -7,7 +7,11 @@ declare module 'egg' {
     }
     interface Context {
         model: {
-            User: Model<{}, {}>
+            User: Model<{ userName: string; passWord: string; id: number }, {}>
+            Exercise: Model<
+                { type: string; name: string; data: any; user: string },
+                {}
+            >
         }
     }
 }

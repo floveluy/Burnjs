@@ -6,7 +6,7 @@ import { Auth } from '../lib/decorator/auth'
 class UserEntity {
     @Require userName: string
 
-    @Require passWord: string
+    @Require password: string
 }
 
 class RegisterEntity extends UserEntity {}
@@ -24,15 +24,19 @@ export default class LoginController extends ControllerBase {
         })
 
         if (user) {
-            if (user.passWord === body.passWord) {
+            if (user.passWord === body.password) {
                 const token = app.jwt.sign(
-                    { foo: 'bar' },
+                    { token: 'asldjklj123jh1231hkjhlkjsakldjad123' },
                     app.config.jwt.secret
                 ) //生成一个token发给前端
                 this.QuickSuccess({
                     token
                 })
+            } else {
+                this.QuickFail('账号或者密码错误')
             }
+        } else {
+            this.QuickFail('没有这个用户')
         }
     }
 
@@ -46,11 +50,11 @@ export default class LoginController extends ControllerBase {
     @ControllerBase.route.post('/register')
     @bodyValidator(RegisterEntity)
     async quickRegister(body: RegisterEntity) {
-      
-        await this.ctx.model.User.create({
-            userName: body.userName,
-            passWord: body.passWord
-        })
-
+        const {
+            message,
+            status
+        } = await this.ctx.service.login.registerAccount(body)
+        this.QuickSuccess({ message })
+        this.ctx.status = status
     }
 }

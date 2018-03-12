@@ -29,6 +29,20 @@ class ControllerBase extends egg_1.Controller {
             'Content-Type': 'application/json;charset=utf-8'
         });
     }
+    /**
+     * 获取当前用户信息
+     */
+    async CurrentUser() {
+        const { token } = this.ctx.jwtDecode;
+        const user = await this.ctx.model.User.findOne({
+            where: {
+                token
+            }
+        });
+        if (user)
+            return user;
+        throw Error('user-fetch-fail');
+    }
 }
 ControllerBase.route = index_1.bp;
 exports.ControllerBase = ControllerBase;

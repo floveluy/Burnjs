@@ -5,22 +5,17 @@ module.exports = (app: Application) => {
     const Sequelize = app.Sequelize
 
     const { STRING } = Sequelize
-    const user = ModelDefine(app, 'user', {
-        userName: {
-            type: STRING(20),
-            unique: true,
-            allowNull: false
-        },
-        passWord: {
+    const model = ModelDefine(app, 'exercise', {
+        type: {
             type: STRING(20),
             allowNull: false
         },
-        token: STRING(128)
+        name: {
+            type: STRING(20),
+            allowNull: false
+        },
+        data: Sequelize.JSON,
+        user: Sequelize.STRING(20)
     })
-    //   user.create({
-    //     userName: 'floveluy',
-    //     passWord: 'metal_gear2'
-    //   })
-
-    return user
+    return model
 }

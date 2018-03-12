@@ -17,7 +17,7 @@ __decorate([
 ], UserEntity.prototype, "userName", void 0);
 __decorate([
     validator_1.Require
-], UserEntity.prototype, "passWord", void 0);
+], UserEntity.prototype, "password", void 0);
 class RegisterEntity extends UserEntity {
 }
 class LoginController extends controller_base_1.ControllerBase {
@@ -30,12 +30,18 @@ class LoginController extends controller_base_1.ControllerBase {
             }
         });
         if (user) {
-            if (user.passWord === body.passWord) {
-                const token = app.jwt.sign({ foo: 'bar' }, app.config.jwt.secret); //生成一个token发给前端
+            if (user.passWord === body.password) {
+                const token = app.jwt.sign({ token: 'asldjklj123jh1231hkjhlkjsakldjad123' }, app.config.jwt.secret); //生成一个token发给前端
                 this.QuickSuccess({
                     token
                 });
             }
+            else {
+                this.QuickFail('账号或者密码错误');
+            }
+        }
+        else {
+            this.QuickFail('没有这个用户');
         }
     }
     async apple() {
@@ -43,10 +49,9 @@ class LoginController extends controller_base_1.ControllerBase {
         ctx.body = ' wex';
     }
     async quickRegister(body) {
-        await this.ctx.model.User.create({
-            userName: body.userName,
-            passWord: body.passWord
-        });
+        const { message, status } = await this.ctx.service.login.registerAccount(body);
+        this.QuickSuccess({ message });
+        this.ctx.status = status;
     }
 }
 __decorate([
