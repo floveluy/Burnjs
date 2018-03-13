@@ -36,7 +36,14 @@ class Exercise extends controller_base_1.ControllerBase {
             name: body.name,
             user: user.userName
         });
-        this.QuickSuccess({});
+        const top10List = await this.ctx.model.Exercise.findAll({
+            where: {
+                user: user.userName
+            },
+            attributes: ['id', 'type', 'name'],
+            limit: 10
+        });
+        this.QuickSuccess({ exercise: top10List });
     }
     async addSets(body) {
         const user = await this.CurrentUser();

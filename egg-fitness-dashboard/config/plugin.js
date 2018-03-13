@@ -22,3 +22,7 @@ exports.cors = {
     enable: true,
     package: 'egg-cors'
 }
+
+exports.static = {
+    // maxAge: 31536000,
+  };

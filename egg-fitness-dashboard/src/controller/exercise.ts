@@ -24,7 +24,16 @@ export default class Exercise extends ControllerBase {
             name: body.name,
             user: user.userName
         })
-        this.QuickSuccess({})
+
+        const top10List = await this.ctx.model.Exercise.findAll({
+            where: {
+                user: user.userName
+            },
+            attributes: ['id', 'type', 'name'],
+            limit: 10
+        })
+
+        this.QuickSuccess({ exercise: top10List })
     }
 
     @ControllerBase.route.post('/exercise/set/create')
