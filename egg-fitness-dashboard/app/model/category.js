@@ -5,18 +5,12 @@ module.exports = (app) => {
     const Sequelize = app.Sequelize;
     const { STRING, BIGINT } = Sequelize;
     const model = ModelDefine_1.ModelDefine(app, 'category', {
-        name: {
+        categoryName: {
             type: STRING(20),
             allowNull: false
         },
-        categoryID: {
-            type: BIGINT,
-            allowNull: false
-        },
+        categoryID: BIGINT,
         user: Sequelize.STRING(20)
     });
     return model;
 };
-class CategoryEntity {
-}
-exports.CategoryEntity = CategoryEntity;

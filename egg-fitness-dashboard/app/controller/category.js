@@ -7,10 +7,69 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const controller_base_1 = require("../controller/controller-base");
-class Category extends controller_base_1.ControllerBase {
-    async createCategory() { }
+const auth_1 = require("../lib/decorator/auth");
+const validator_1 = require("../lib/decorator/validator");
+class CategoryEntity {
 }
 __decorate([
-    controller_base_1.ControllerBase.route.post('/category/create')
+    validator_1.Require
+], CategoryEntity.prototype, "categoryName", void 0);
+__decorate([
+    validator_1.Require
+], CategoryEntity.prototype, "categoryID", void 0);
+class BindCategoryEntity {
+}
+__decorate([
+    validator_1.Require
+], BindCategoryEntity.prototype, "categoryID", void 0);
+__decorate([
+    validator_1.Require
+], BindCategoryEntity.prototype, "exerciseID", void 0);
+class Category extends controller_base_1.ControllerBase {
+    async createCategory(body) {
+        const u = await this.CurrentUser();
+        await this.ctx.model.Category.create({
+            categoryName: body.categoryName,
+            user: u.userName,
+            categoryID: body.categoryID
+        });
+        this.QuickSuccess({});
+    }
+    async bindCategory(body) {
+        const u = await this.CurrentUser();
+        await this.ctx.model.Exercise.update({
+            categoryID: body.categoryID
+        }, {
+            where: {
+                user: u.userName,
+                id: body.exerciseID
+            }
+        });
+        this.QuickSuccess({});
+    }
+    async getExerciseByCategoryID() {
+        const cateid = this.ctx.params.id;
+        const list = await this.ctx.model.Category.findAll({
+            where: {
+                categoryID: cateid
+            }
+        });
+        this.QuickSuccess({ exercise: list });
+    }
+}
+__decorate([
+    controller_base_1.ControllerBase.route.post('/category/create'),
+    validator_1.bodyValidator(CategoryEntity),
+    auth_1.Auth
 ], Category.prototype, "createCategory", null);
+__decorate([
+    controller_base_1.ControllerBase.route.post('/category/bind'),
+    validator_1.bodyValidator(CategoryEntity),
+    auth_1.Auth
+], Category.prototype, "bindCategory", null);
+__decorate([
+    controller_base_1.ControllerBase.route.get('/category/exercise/:id'),
+    validator_1.bodyValidator(CategoryEntity),
+    auth_1.Auth
+], Category.prototype, "getExerciseByCategoryID", null);
 exports.default = Category;
