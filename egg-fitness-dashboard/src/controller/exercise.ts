@@ -2,7 +2,7 @@ import { ControllerBase } from './controller-base'
 import { bodyValidator, Require } from '../lib/decorator/validator'
 import { Auth } from '../lib/decorator/auth'
 
-class ExerciseEntity {
+export class ExerciseEntity {
     @Require type: string
     @Require name: string
 }

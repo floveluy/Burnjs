@@ -17,6 +17,7 @@ __decorate([
 __decorate([
     validator_1.Require
 ], ExerciseEntity.prototype, "name", void 0);
+exports.ExerciseEntity = ExerciseEntity;
 class SetEntity {
 }
 __decorate([
