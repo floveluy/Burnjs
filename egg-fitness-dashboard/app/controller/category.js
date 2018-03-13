@@ -6,49 +6,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const controller_base_1 = require("./controller-base");
-const auth_1 = require("../lib/decorator/auth");
-const validator_1 = require("../lib/decorator/validator");
-const category_1 = require("../model/category");
-const exercise_1 = require("./exercise");
-class ExerciseForBindEntity extends exercise_1.ExerciseEntity {
-}
-__decorate([
-    validator_1.Require
-], ExerciseForBindEntity.prototype, "categoryID", void 0);
-__decorate([
-    validator_1.Require
-], ExerciseForBindEntity.prototype, "id", void 0);
+const controller_base_1 = require("../controller/controller-base");
 class Category extends controller_base_1.ControllerBase {
-    async createCategory(body) {
-        const u = await this.CurrentUser();
-        await this.ctx.model.Category.create({
-            name: body.name,
-            categoryID: body.categoryID,
-            user: u.userName
-        });
-        this.QuickSuccess({});
-    }
-    async bindExerciseToCategory(body) {
-        const u = await this.CurrentUser();
-        this.ctx.model.Exercise.update({
-            categoryID: body.categoryID
-        }, {
-            where: {
-                user: u.userName,
-                id: body.id
-            }
-        });
-    }
+    async createCategory() { }
 }
 __decorate([
-    controller_base_1.ControllerBase.route.post('/category/create'),
-    validator_1.bodyValidator(category_1.CategoryEntity),
-    auth_1.Auth
+    controller_base_1.ControllerBase.route.post('/category/create')
 ], Category.prototype, "createCategory", null);
-__decorate([
-    controller_base_1.ControllerBase.route.post('/category/bind'),
-    validator_1.bodyValidator(ExerciseForBindEntity),
-    auth_1.Auth
-], Category.prototype, "bindExerciseToCategory", null);
 exports.default = Category;
