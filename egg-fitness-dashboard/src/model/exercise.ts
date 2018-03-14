@@ -18,5 +18,7 @@ module.exports = (app: Application) => {
         user: Sequelize.STRING(20)
     })
 
+    model.sync({ alter: true })
+
     return model
 }

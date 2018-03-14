@@ -16,5 +16,6 @@ module.exports = (app) => {
         categoryID: BIGINT,
         user: Sequelize.STRING(20)
     });
+    model.sync({ alter: true });
     return model;
 };

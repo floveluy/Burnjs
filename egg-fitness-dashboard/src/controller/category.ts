@@ -13,6 +13,23 @@ class BindCategoryEntity {
 }
 
 export default class Category extends ControllerBase {
+    @ControllerBase.route.get('/category')
+    @Auth
+    async getCategory() {
+        const u = await this.CurrentUser()
+        try {
+            const list = await this.ctx.model.Category.findAll({
+                where: {
+                    user: u.userName
+                }
+            })
+
+            this.QuickSuccess({ category: list })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     @ControllerBase.route.post('/category/create')
     @bodyValidator(CategoryEntity)
     @Auth
@@ -50,9 +67,11 @@ export default class Category extends ControllerBase {
     @Auth
     async getExerciseByCategoryID() {
         const cateid = this.ctx.params.id
-        const list = await this.ctx.model.Category.findAll({
+        const u = await this.CurrentUser()
+        const list = await this.ctx.model.Exercise.findAll({
             where: {
-                categoryID: cateid
+                categoryID: cateid,
+                user: u.userName
             }
         })
         this.QuickSuccess({ exercise: list })

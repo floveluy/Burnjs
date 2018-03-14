@@ -14,5 +14,6 @@ module.exports = (app: Application) => {
         user: Sequelize.STRING(20)
     })
 
+    
     return model
 }

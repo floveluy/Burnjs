@@ -26,6 +26,20 @@ __decorate([
     validator_1.Require
 ], BindCategoryEntity.prototype, "exerciseID", void 0);
 class Category extends controller_base_1.ControllerBase {
+    async getCategory() {
+        const u = await this.CurrentUser();
+        try {
+            const list = await this.ctx.model.Category.findAll({
+                where: {
+                    user: u.userName
+                }
+            });
+            this.QuickSuccess({ category: list });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
     async createCategory(body) {
         const u = await this.CurrentUser();
         await this.ctx.model.Category.create({
@@ -49,14 +63,20 @@ class Category extends controller_base_1.ControllerBase {
     }
     async getExerciseByCategoryID() {
         const cateid = this.ctx.params.id;
-        const list = await this.ctx.model.Category.findAll({
+        const u = await this.CurrentUser();
+        const list = await this.ctx.model.Exercise.findAll({
             where: {
-                categoryID: cateid
+                categoryID: cateid,
+                user: u.userName
             }
         });
         this.QuickSuccess({ exercise: list });
     }
 }
+__decorate([
+    controller_base_1.ControllerBase.route.get('/category'),
+    auth_1.Auth
+], Category.prototype, "getCategory", null);
 __decorate([
     controller_base_1.ControllerBase.route.post('/category/create'),
     validator_1.bodyValidator(CategoryEntity),
