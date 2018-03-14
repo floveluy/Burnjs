@@ -46,6 +46,26 @@ function Require(target, key) {
     });
 }
 exports.Require = Require;
+function Require_Array(target, key) {
+    Object.defineProperty(target, key, {
+        get() {
+            if (this.Property[key] === void 666 ||
+                this.Property[key].length === 0) {
+                throw new Error(`没有${key}`);
+            }
+            return this.Property[key];
+        },
+        set(prop) {
+            if (this.Property === void 666) {
+                ;
+                this.Property = {};
+            }
+            ;
+            this.Property[key] = prop;
+        }
+    });
+}
+exports.Require_Array = Require_Array;
 function log() {
     return function (target, key, descriptor) {
         const originFunction = descriptor.value; //被装饰的函数被保存在value中.

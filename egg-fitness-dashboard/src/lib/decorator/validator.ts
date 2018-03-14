@@ -45,6 +45,26 @@ export function Require(target: any, key: string) {
     })
 }
 
+export function Require_Array(target: any, key: string) {
+    Object.defineProperty(target, key, {
+        get() {
+            if (
+                (this as any).Property[key] === void 666 ||
+                (this as any).Property[key].length === 0
+            ) {
+                throw new Error(`没有${key}`)
+            }
+            return (this as any).Property[key]
+        },
+        set(prop) {
+            if ((this as any).Property === void 666) {
+                ;(this as any).Property = {}
+            }
+            ;(this as any).Property[key] = prop
+        }
+    })
+}
+
 export function log() {
     return function(target: any, key: string, descriptor: PropertyDescriptor) {
         const originFunction: Function = descriptor.value //被装饰的函数被保存在value中.

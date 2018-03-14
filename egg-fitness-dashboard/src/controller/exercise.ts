@@ -1,5 +1,9 @@
 import { ControllerBase } from './controller-base'
-import { bodyValidator, Require } from '../lib/decorator/validator'
+import {
+    bodyValidator,
+    Require,
+    Require_Array
+} from '../lib/decorator/validator'
 import { Auth } from '../lib/decorator/auth'
 
 export class ExerciseEntity {
@@ -9,8 +13,9 @@ export class ExerciseEntity {
 
 class SetEntity {
     @Require name: string
-    @Require sets: string
+    @Require_Array sets: string[]
     @Require date: string
+    @Require exerciseID: number
 }
 
 export default class Exercise extends ControllerBase {
@@ -37,15 +42,16 @@ export default class Exercise extends ControllerBase {
     }
 
     @ControllerBase.route.post('/exercise/set/create')
-    @bodyValidator(SetEntity)
     @Auth
+    @bodyValidator(SetEntity)
     async addSets(body: SetEntity) {
         const user = await this.CurrentUser()
         await this.ctx.model.Set.create({
             data: body.sets,
             date: body.date,
             user: user.userName,
-            name: body.name
+            name: body.name,
+            exerciseID: body.exerciseID
         })
         this.QuickSuccess({})
     }
@@ -57,7 +63,7 @@ export default class Exercise extends ControllerBase {
         const u = await this.CurrentUser()
         const history = await this.ctx.model.Set.findAll({
             where: {
-                id: id,
+                exerciseID: id,
                 user: u.userName
             }
         })
