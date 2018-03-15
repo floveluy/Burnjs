@@ -7,6 +7,10 @@ class CategoryEntity {
     @Require categoryID: number
 }
 
+class CategoryForDelete {
+    @Require categoryID: number
+}
+
 class BindCategoryEntity {
     @Require categoryID: number
     @Require exerciseID: number
@@ -41,6 +45,36 @@ export default class Category extends ControllerBase {
             categoryID: body.categoryID
         })
         this.QuickSuccess({})
+    }
+
+    @ControllerBase.route.post('/category/delete')
+    @Auth
+    @bodyValidator(CategoryForDelete)
+    async deleteCategory(body: CategoryForDelete) {
+        const u = await this.CurrentUser()
+        await this.ctx.model.Category.destroy({
+            where: {
+                user: u.userName,
+                categoryID: body.categoryID
+            }
+        })
+        await this.ctx.model.Exercise.update(
+            {
+                categoryID: null
+            },
+            {
+                where: {
+                    user: u.userName
+                }
+            }
+        )
+
+        const list = await this.ctx.model.Category.findAll({
+            where: {
+                user: u.userName
+            }
+        })
+        this.QuickSuccess({ category: list })
     }
 
     @ControllerBase.route.post('/category/bind')

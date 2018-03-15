@@ -15,10 +15,15 @@ module.exports = (app: Application) => {
             allowNull: false
         },
         categoryID: BIGINT,
-        user: Sequelize.STRING(20)
+        user: STRING(20)
     })
 
-    model.sync({ alter: true })
-
     return model
+}
+
+export interface ExerciseModel {
+    type: string
+    name: string
+    categoryID: number
+    user: string
 }

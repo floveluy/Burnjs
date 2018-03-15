@@ -21,9 +21,6 @@ exports.ExerciseEntity = ExerciseEntity;
 class SetEntity {
 }
 __decorate([
-    validator_1.Require
-], SetEntity.prototype, "name", void 0);
-__decorate([
     validator_1.Require_Array
 ], SetEntity.prototype, "sets", void 0);
 __decorate([
@@ -32,13 +29,22 @@ __decorate([
 __decorate([
     validator_1.Require
 ], SetEntity.prototype, "exerciseID", void 0);
+class HistoryDeleteEntity {
+}
+__decorate([
+    validator_1.Require
+], HistoryDeleteEntity.prototype, "date", void 0);
+__decorate([
+    validator_1.Require
+], HistoryDeleteEntity.prototype, "exerciseID", void 0);
 class Exercise extends controller_base_1.ControllerBase {
     async createExercise(body) {
         const user = await this.CurrentUser();
         await this.ctx.model.Exercise.create({
             type: body.type,
             name: body.name,
-            user: user.userName
+            user: user.userName,
+            categoryID: null
         });
         const top10List = await this.ctx.model.Exercise.findAll({
             where: {
@@ -49,13 +55,36 @@ class Exercise extends controller_base_1.ControllerBase {
         });
         this.QuickSuccess({ exercise: top10List });
     }
+    async deleteExercise() {
+        console.log('到这里');
+        const user = await this.CurrentUser();
+        const id = this.ctx.params.id;
+        await this.ctx.model.Exercise.destroy({
+            where: {
+                id: id,
+                user: user.userName
+            }
+        });
+        await this.ctx.model.Set.destroy({
+            where: {
+                user: user.userName,
+                exerciseID: id
+            }
+        });
+        const exercise = await this.ctx.model.Exercise.findAll({
+            where: {
+                user: user.userName
+            },
+            attributes: ['id', 'type', 'name', 'categoryID']
+        });
+        this.QuickSuccess({ exercise });
+    }
     async addSets(body) {
         const user = await this.CurrentUser();
         await this.ctx.model.Set.create({
             data: body.sets,
             date: body.date,
             user: user.userName,
-            name: body.name,
             exerciseID: body.exerciseID
         });
         this.QuickSuccess({});
@@ -67,7 +96,26 @@ class Exercise extends controller_base_1.ControllerBase {
             where: {
                 exerciseID: id,
                 user: u.userName
+            },
+            order: [['date', 'DESC']]
+        });
+        this.QuickSuccess({ history });
+    }
+    async deleteHistory(body) {
+        const u = await this.CurrentUser();
+        await this.ctx.model.Set.destroy({
+            where: {
+                user: u.userName,
+                exerciseID: body.exerciseID,
+                date: body.date
             }
+        });
+        const history = await this.ctx.model.Set.findAll({
+            where: {
+                exerciseID: body.exerciseID,
+                user: u.userName
+            },
+            order: [['date', 'DESC']]
         });
         this.QuickSuccess({ history });
     }
@@ -78,7 +126,7 @@ class Exercise extends controller_base_1.ControllerBase {
                 where: {
                     user: u.userName
                 },
-                attributes: ['id', 'type', 'name']
+                attributes: ['id', 'type', 'name', 'categoryID']
             });
             this.QuickSuccess({ exercise });
         }
@@ -89,9 +137,13 @@ class Exercise extends controller_base_1.ControllerBase {
 }
 __decorate([
     controller_base_1.ControllerBase.route.post('/exercise/create'),
-    validator_1.bodyValidator(ExerciseEntity),
-    auth_1.Auth
+    auth_1.Auth,
+    validator_1.bodyValidator(ExerciseEntity)
 ], Exercise.prototype, "createExercise", null);
+__decorate([
+    controller_base_1.ControllerBase.route.get('/exercise/delete/:id'),
+    auth_1.Auth
+], Exercise.prototype, "deleteExercise", null);
 __decorate([
     controller_base_1.ControllerBase.route.post('/exercise/set/create'),
     auth_1.Auth,
@@ -101,6 +153,11 @@ __decorate([
     controller_base_1.ControllerBase.route.get('/exercise/history/:id'),
     auth_1.Auth
 ], Exercise.prototype, "ExerciseHistory", null);
+__decorate([
+    controller_base_1.ControllerBase.route.post('/exercise/history/delete'),
+    auth_1.Auth,
+    validator_1.bodyValidator(HistoryDeleteEntity)
+], Exercise.prototype, "deleteHistory", null);
 __decorate([
     controller_base_1.ControllerBase.route.get('/exercise'),
     auth_1.Auth

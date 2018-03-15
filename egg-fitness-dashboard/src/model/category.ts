@@ -14,6 +14,11 @@ module.exports = (app: Application) => {
         user: Sequelize.STRING(20)
     })
 
-    
     return model
+}
+
+export interface CategoryModel {
+    categoryName: string
+    categoryID: number
+    user: string
 }

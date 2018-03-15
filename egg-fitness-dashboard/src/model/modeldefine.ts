@@ -24,3 +24,7 @@ export const ModelDefine = (
     )
     return Model
 }
+
+export interface BaseModel {
+    id?: number
+}

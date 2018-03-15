@@ -14,8 +14,7 @@ module.exports = (app) => {
             allowNull: false
         },
         categoryID: BIGINT,
-        user: Sequelize.STRING(20)
+        user: STRING(20)
     });
-    model.sync({ alter: true });
     return model;
 };

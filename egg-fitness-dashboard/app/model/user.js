@@ -16,9 +16,5 @@ module.exports = (app) => {
         },
         token: STRING(128)
     });
-    //   user.create({
-    //     userName: 'floveluy',
-    //     passWord: 'metal_gear2'
-    //   })
     return user;
 };

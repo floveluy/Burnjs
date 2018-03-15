@@ -17,6 +17,11 @@ __decorate([
 __decorate([
     validator_1.Require
 ], CategoryEntity.prototype, "categoryID", void 0);
+class CategoryForDelete {
+}
+__decorate([
+    validator_1.Require
+], CategoryForDelete.prototype, "categoryID", void 0);
 class BindCategoryEntity {
 }
 __decorate([
@@ -48,6 +53,28 @@ class Category extends controller_base_1.ControllerBase {
             categoryID: body.categoryID
         });
         this.QuickSuccess({});
+    }
+    async deleteCategory(body) {
+        const u = await this.CurrentUser();
+        await this.ctx.model.Category.destroy({
+            where: {
+                user: u.userName,
+                categoryID: body.categoryID
+            }
+        });
+        await this.ctx.model.Exercise.update({
+            categoryID: null
+        }, {
+            where: {
+                user: u.userName
+            }
+        });
+        const list = await this.ctx.model.Category.findAll({
+            where: {
+                user: u.userName
+            }
+        });
+        this.QuickSuccess({ category: list });
     }
     async bindCategory(body) {
         const u = await this.CurrentUser();
@@ -82,6 +109,11 @@ __decorate([
     validator_1.bodyValidator(CategoryEntity),
     auth_1.Auth
 ], Category.prototype, "createCategory", null);
+__decorate([
+    controller_base_1.ControllerBase.route.post('/category/delete'),
+    auth_1.Auth,
+    validator_1.bodyValidator(CategoryForDelete)
+], Category.prototype, "deleteCategory", null);
 __decorate([
     controller_base_1.ControllerBase.route.post('/category/bind'),
     validator_1.bodyValidator(CategoryEntity),
