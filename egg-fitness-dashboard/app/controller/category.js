@@ -33,17 +33,8 @@ __decorate([
 class Category extends controller_base_1.ControllerBase {
     async getCategory() {
         const u = await this.CurrentUser();
-        try {
-            const list = await this.ctx.model.Category.findAll({
-                where: {
-                    user: u.userName
-                }
-            });
-            this.QuickSuccess({ category: list });
-        }
-        catch (e) {
-            console.log(e);
-        }
+        const list = await this.ctx.service.category.CurrentCategoryList(u);
+        this.QuickSuccess({ category: list });
     }
     async createCategory(body) {
         const u = await this.CurrentUser();
@@ -52,11 +43,7 @@ class Category extends controller_base_1.ControllerBase {
             user: u.userName,
             categoryID: body.categoryID
         });
-        const list = await this.ctx.model.Category.findAll({
-            where: {
-                user: u.userName
-            }
-        });
+        const list = await this.ctx.service.category.CurrentCategoryList(u);
         this.QuickSuccess({ category: list });
     }
     async deleteCategory(body) {
@@ -74,11 +61,7 @@ class Category extends controller_base_1.ControllerBase {
                 user: u.userName
             }
         });
-        const list = await this.ctx.model.Category.findAll({
-            where: {
-                user: u.userName
-            }
-        });
+        const list = await this.ctx.service.category.CurrentCategoryList(u);
         this.QuickSuccess({ category: list });
     }
     async bindCategory(body) {

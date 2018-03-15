@@ -17,21 +17,13 @@ class BindCategoryEntity {
 }
 
 export default class Category extends ControllerBase {
+    
     @ControllerBase.route.get('/category')
     @Auth
     async getCategory() {
         const u = await this.CurrentUser()
-        try {
-            const list = await this.ctx.model.Category.findAll({
-                where: {
-                    user: u.userName
-                }
-            })
-
-            this.QuickSuccess({ category: list })
-        } catch (e) {
-            console.log(e)
-        }
+        const list = await this.ctx.service.category.CurrentCategoryList(u)
+        this.QuickSuccess({ category: list })
     }
 
     @ControllerBase.route.post('/category/create')
@@ -44,11 +36,7 @@ export default class Category extends ControllerBase {
             user: u.userName,
             categoryID: body.categoryID
         })
-        const list = await this.ctx.model.Category.findAll({
-            where: {
-                user: u.userName
-            }
-        })
+        const list = await this.ctx.service.category.CurrentCategoryList(u)
 
         this.QuickSuccess({ category: list })
     }
@@ -75,11 +63,7 @@ export default class Category extends ControllerBase {
             }
         )
 
-        const list = await this.ctx.model.Category.findAll({
-            where: {
-                user: u.userName
-            }
-        })
+        const list = await this.ctx.service.category.CurrentCategoryList(u)
         this.QuickSuccess({ category: list })
     }
 
