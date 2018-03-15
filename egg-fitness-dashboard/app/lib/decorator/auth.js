@@ -29,9 +29,12 @@ function Auth(target, key, descriptor) {
                 c.QuickFail('login invalid');
                 c.ctx.status = 401;
             }
-            if (e.message === 'user-fetch-fail') {
+            else if (e.message === 'user-fetch-fail') {
                 c.QuickFail('not such user');
                 c.ctx.status = 401;
+            }
+            else {
+                console.log(e);
             }
         }
     };

@@ -11,6 +11,7 @@ module.exports = (app: Application) => {
         date: BIGINT,
         user: Sequelize.STRING(20)
     })
+
     return model
 }
 
