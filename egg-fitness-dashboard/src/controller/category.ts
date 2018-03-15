@@ -44,7 +44,13 @@ export default class Category extends ControllerBase {
             user: u.userName,
             categoryID: body.categoryID
         })
-        this.QuickSuccess({})
+        const list = await this.ctx.model.Category.findAll({
+            where: {
+                user: u.userName
+            }
+        })
+
+        this.QuickSuccess({ category: list })
     }
 
     @ControllerBase.route.post('/category/delete')
@@ -93,12 +99,46 @@ export default class Category extends ControllerBase {
                 }
             }
         )
-        this.QuickSuccess({})
+
+        const list = await this.ctx.model.Exercise.findAll({
+            where: {
+                categoryID: body.categoryID,
+                user: u.userName
+            }
+        })
+        this.QuickSuccess({ exercise: list })
+    }
+
+    @ControllerBase.route.post('/category/exercise/remove')
+    @Auth
+    @bodyValidator(BindCategoryEntity)
+    async removeExerciseFromCategory(body: BindCategoryEntity) {
+        const u = await this.CurrentUser()
+        await this.ctx.model.Exercise.update(
+            {
+                categoryID: null
+            },
+            {
+                where: {
+                    user: u.userName,
+                    id: body.exerciseID,
+                    categoryID: body.categoryID
+                }
+            }
+        )
+
+        const list = await this.ctx.model.Exercise.findAll({
+            where: {
+                categoryID: body.categoryID,
+                user: u.userName
+            }
+        })
+        this.QuickSuccess({ exercise: list })
     }
 
     @ControllerBase.route.get('/category/exercise/:id')
-    @bodyValidator(CategoryEntity)
     @Auth
+    @bodyValidator(CategoryEntity)
     async getExerciseByCategoryID() {
         const cateid = this.ctx.params.id
         const u = await this.CurrentUser()

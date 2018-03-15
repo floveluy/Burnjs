@@ -52,7 +52,12 @@ class Category extends controller_base_1.ControllerBase {
             user: u.userName,
             categoryID: body.categoryID
         });
-        this.QuickSuccess({});
+        const list = await this.ctx.model.Category.findAll({
+            where: {
+                user: u.userName
+            }
+        });
+        this.QuickSuccess({ category: list });
     }
     async deleteCategory(body) {
         const u = await this.CurrentUser();
@@ -86,7 +91,32 @@ class Category extends controller_base_1.ControllerBase {
                 id: body.exerciseID
             }
         });
-        this.QuickSuccess({});
+        const list = await this.ctx.model.Exercise.findAll({
+            where: {
+                categoryID: body.categoryID,
+                user: u.userName
+            }
+        });
+        this.QuickSuccess({ exercise: list });
+    }
+    async removeExerciseFromCategory(body) {
+        const u = await this.CurrentUser();
+        await this.ctx.model.Exercise.update({
+            categoryID: null
+        }, {
+            where: {
+                user: u.userName,
+                id: body.exerciseID,
+                categoryID: body.categoryID
+            }
+        });
+        const list = await this.ctx.model.Exercise.findAll({
+            where: {
+                categoryID: body.categoryID,
+                user: u.userName
+            }
+        });
+        this.QuickSuccess({ exercise: list });
     }
     async getExerciseByCategoryID() {
         const cateid = this.ctx.params.id;
@@ -120,8 +150,13 @@ __decorate([
     auth_1.Auth
 ], Category.prototype, "bindCategory", null);
 __decorate([
+    controller_base_1.ControllerBase.route.post('/category/exercise/remove'),
+    auth_1.Auth,
+    validator_1.bodyValidator(BindCategoryEntity)
+], Category.prototype, "removeExerciseFromCategory", null);
+__decorate([
     controller_base_1.ControllerBase.route.get('/category/exercise/:id'),
-    validator_1.bodyValidator(CategoryEntity),
-    auth_1.Auth
+    auth_1.Auth,
+    validator_1.bodyValidator(CategoryEntity)
 ], Category.prototype, "getExerciseByCategoryID", null);
 exports.default = Category;
