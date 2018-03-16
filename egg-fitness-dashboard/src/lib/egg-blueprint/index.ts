@@ -40,6 +40,11 @@ export interface blueprint extends Blueprint {
 
 class Blueprint {
     router: Bp = {}
+    _prefix: string = ''
+
+    setPrefix = (prefix: string) => {
+        this._prefix = prefix
+    }
 
     remove(src: string, st: string) {
         const index = src.indexOf(st)
@@ -56,7 +61,8 @@ class Blueprint {
         })
     }
 
-    setRouter(url: string, blueprint: BP) {
+    setRouter(urls: string, blueprint: BP) {
+        const url = this._prefix === '' ? urls : this._prefix + urls
         const _bp = this.router[url]
         if (_bp) {
             //检查http method 是否冲突
@@ -124,4 +130,7 @@ methods.forEach(httpMethod => {
     })
 })
 
-export const bp: blueprint = <any>new Blueprint()
+const bpInstance = new Blueprint()
+bpInstance.setPrefix('/api')
+
+export const bp: blueprint = <any>bpInstance

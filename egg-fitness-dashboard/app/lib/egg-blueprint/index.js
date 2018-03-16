@@ -6,6 +6,10 @@ const methods = ['get', 'post', 'patch', 'del', 'options', 'put'];
 class Blueprint {
     constructor() {
         this.router = {};
+        this._prefix = '';
+        this.setPrefix = (prefix) => {
+            this._prefix = prefix;
+        };
     }
     remove(src, st) {
         const index = src.indexOf(st);
@@ -20,7 +24,8 @@ class Blueprint {
             require(dir + 'app/controller/' + file);
         });
     }
-    setRouter(url, blueprint) {
+    setRouter(urls, blueprint) {
+        const url = this._prefix === '' ? urls : this._prefix + urls;
         const _bp = this.router[url];
         if (_bp) {
             //检查http method 是否冲突
@@ -88,4 +93,6 @@ methods.forEach(httpMethod => {
         }
     });
 });
-exports.bp = new Blueprint();
+const bpInstance = new Blueprint();
+bpInstance.setPrefix('/api');
+exports.bp = bpInstance;
