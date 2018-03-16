@@ -1,5 +1,5 @@
 import { Application } from 'egg'
-import { ModelDefine } from './ModelDefine'
+import { ModelDefine } from './modeldefine'
 
 module.exports = (app: Application) => {
     const Sequelize = app.Sequelize

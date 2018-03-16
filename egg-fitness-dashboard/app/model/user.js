@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ModelDefine_1 = require("./ModelDefine");
+const modeldefine_1 = require("./modeldefine");
 module.exports = (app) => {
     const Sequelize = app.Sequelize;
     const { STRING } = Sequelize;
-    const user = ModelDefine_1.ModelDefine(app, 'user', {
+    const user = modeldefine_1.ModelDefine(app, 'user', {
         userName: {
             type: STRING(20),
             unique: true,
