@@ -22,7 +22,7 @@ export const ModelDefine = (
             timestamps: false
         }
     )
-    Model.sync({force:true})
+    // Model.sync({ force: true })
     return Model
 }
 

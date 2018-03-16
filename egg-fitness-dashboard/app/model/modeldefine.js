@@ -10,6 +10,6 @@ exports.ModelDefine = (app, name, attributes) => {
         } }, attributes), {
         timestamps: false
     });
-    Model.sync({ force: true });
+    // Model.sync({ force: true })
     return Model;
 };
