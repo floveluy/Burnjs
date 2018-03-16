@@ -33,7 +33,7 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-fitness-dashboard",
+    "start": "egg-scripts start --daemon --port=9999 --title=egg-server-fitness-dashboard",
     "stop": "egg-scripts stop --title=egg-server-fitness-dashboard",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
