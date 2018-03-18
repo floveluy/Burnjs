@@ -39,7 +39,7 @@ class LoginController extends controller_base_1.ControllerBase {
         if (user.passWord !== body.password)
             throw new Error('账号或者密码错误');
         const sha1 = cyp.createHash('sha1');
-        sha1.update(`${CONST_DATE + 1}`);
+        sha1.update(`${CONST_DATE + 1}` + body.userName + user.passWord);
         const userToken = sha1.digest('hex');
         const jwtToken = app.jwt.sign({ token: userToken }, app.config.jwt.secret); //生成一个token发给前端
         await this.ctx.model.User.update({
