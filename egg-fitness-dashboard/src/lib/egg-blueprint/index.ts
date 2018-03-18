@@ -131,6 +131,8 @@ methods.forEach(httpMethod => {
 })
 
 const bpInstance = new Blueprint()
+
+
 bpInstance.setPrefix('/api')
 
 export const bp: blueprint = <any>bpInstance

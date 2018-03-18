@@ -1,11 +1,7 @@
-
 'use strict'
 
 module.exports = appInfo => {
-   
-    
-    
-    const config =  {}
+    const config = {}
     // use for cookie sign key, should change to your own and keep security
     config.keys = appInfo.name + '_metal_gear2'
 
@@ -32,12 +28,11 @@ module.exports = appInfo => {
         }
     }
 
-
     config.security = {
         csrf: {
             enable: false
         },
-        domainWhiteList: ['http://192.168.1.73:3000']
+        domainWhiteList: ['http://localhost:3000']
     }
 
     config.bodyParser = {
@@ -53,4 +48,3 @@ module.exports = appInfo => {
 
     return config
 }
-
